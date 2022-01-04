@@ -2,19 +2,26 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <title>Demo</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $( document ).ready(function() {
+        console.log( "DOM document loaded" );
+    });
+    
+    $( window ).on( "load", function() {
+        console.log( "window loaded" );
+    });
+  </script>
+  <title>Demo jQuery Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
 <body>
-    <p>Custom page for testing jQuery</p>
-    <p>Refreshed 2.</p>
-    <a href="http://jquery.com/">jQuery</a>
-    <script src="jquery-3.6.0.min"></script>
-    <script>
-      // Learn jQuery https://learn.jquery.com/about-jquery/
-      // Ok.
-    </script>
+  <p>Custom page for testing jQuery</p>
+  <p>Refreshed 2.</p>
+  <p class="style1">text in style</p>
 </body>
 
 </html>

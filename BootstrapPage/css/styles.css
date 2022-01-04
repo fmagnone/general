@@ -1,0 +1,86 @@
+@charset "UTF-8";
+/*!
+* Name
+* Copyright 2022 ??
+*/
+
+/* General Style */
+body {
+  font-family: 'Avenir', Helvetica, sans-serif;
+  background: rgb(50,63,93);
+  background: linear-gradient(156deg, rgba(50,63,93,1) 0%, rgba(48,61,90,1) 25%, rgba(8,11,16,1) 100%);
+}
+.main-container {
+
+}
+.navbar, footer {
+  background-color: #2A3550;
+}
+.nav-link {
+  color: white;
+}
+.nav-link:hover {
+  color: grey;
+}
+.navbar-toggler {
+  border: none;
+}
+.spacer {
+  height: 50px;
+}
+.transp-backgr {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+.upload-box {
+  /*min-height: 40vh;*/
+  border-radius: 20px;
+  border: dashed white 1px;
+}
+.upload-button-text {
+  color: #EC4E6E;
+  font-size: 1.4em;
+  font-weight: 500;
+}
+
+/* Sprites */
+.gr-01, .gr-04a, .gr-04b, .gr-04c {
+  background-image: url('../assets/gr04.svg');
+  background-repeat: no-repeat;
+  height: 150px;
+  width: 150px;
+}
+.gr-01 {
+  background-position: -32px 0px;
+  width: 110px;
+  height: 160px;
+}
+.gr-02 {
+  background-image: url('../assets/gr02.svg');
+  background-repeat: no-repeat;
+  width: 60px;
+  height: 60px;
+}
+.gr-03 {
+  background-image: url('../assets/gr03.svg');
+  background-repeat: no-repeat;
+  width: 253px;
+  height: 31px;
+  background-size: contain;
+}
+.gr-04a {
+  background-position: 0 0;
+}
+.gr-04b {
+  background-position: -150px 0;
+}
+.gr-04c {
+  height: 150px;
+  background-position: -300px 0;
+}
+
+
+/* Font Face Declaration */
+@font-face {
+  font-family: 'Avenir';
+  src: url('../fonts/Avenir.eot?#iefix') format('embedded-opentype'),  url('../fonts/Avenir.woff') format('woff'), url('../fonts/Avenir.ttf')  format('truetype'), url('../fonts/Avenir.svg#Avenir') format('svg');
+}
