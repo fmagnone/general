@@ -26,7 +26,7 @@ body {
   border: none;
 }
 .spacer {
-  height: 50px;
+  height: 40px;
 }
 .transp-backgr {
   background-color: rgba(255, 255, 255, 0.15);
@@ -34,12 +34,33 @@ body {
 .upload-box {
   /*min-height: 40vh;*/
   border-radius: 20px;
+  display: block;
   border: dashed white 1px;
+  color: #ADB9D8;
+  background-color: #526184;
 }
-.upload-button-text {
+.upload-box:hover {
+  color: #ADB9D8;
+  background-color: #071127;
+}
+.upload-box-button-text {
   color: #EC4E6E;
   font-size: 1.4em;
   font-weight: 500;
+}
+.btn-upload {
+
+}
+.btn-upload:hover {
+  
+}
+.btn-upload_from {
+  background-color: #19233B;
+  color: #EC4E6E;
+}
+.btn-upload_from:hover {
+  background-color: #071127;
+  color: #EC4E6E;
 }
 
 /* Sprites */
@@ -64,8 +85,10 @@ body {
   background-image: url('../assets/gr03.svg');
   background-repeat: no-repeat;
   width: 253px;
-  height: 31px;
+  width: 180px;
+  height: 22px;
   background-size: contain;
+  
 }
 .gr-04a {
   background-position: 0 0;
