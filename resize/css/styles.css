@@ -32,17 +32,46 @@ body {
   background-color: rgba(255, 255, 255, 0.15);
 }
 .upload-box {
-  /*min-height: 40vh;*/
-  border-radius: 20px;
+  --border-width: 3px;
+  
   display: block;
-  border: dashed white 1px;
+  position: relative;
   color: #ADB9D8;
-  background-color: #526184;
+  background: #19233B;
+  border-radius: var(--border-width);
+}
+.upload-box::after {
+  --border-width: 3px;
+
+  position: absolute;
+  content: "";
+  top: calc(-1 * var(--border-width));
+  left: calc(-1 * var(--border-width));
+  z-index: -1;
+  width: calc(100% + var(--border-width) * 2);
+  height: calc(100% + var(--border-width) * 2);
+  background: linear-gradient(
+    60deg,
+    hsl(224, 85%, 66%),
+    hsl(269, 85%, 66%),
+    hsl(314, 85%, 66%),
+    hsl(359, 85%, 66%),
+    hsl(44, 85%, 66%),
+    hsl(89, 85%, 66%),
+    hsl(134, 85%, 66%),
+    hsl(179, 85%, 66%)
+  );
+  background-size: 300% 300%;
+  background-position: 0 50%;
+  border-radius: calc(2 * var(--border-width));
+  animation: moveGradient 4s alternate infinite;
 }
 .upload-box:hover {
   color: #ADB9D8;
   background-color: #071127;
 }
+
+
 .upload-box-button-text {
   color: #EC4E6E;
   font-size: 1.4em;
@@ -62,8 +91,63 @@ body {
   background-color: #071127;
   color: #EC4E6E;
 }
+.dropzone {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  z-index: 9999999999;               
+  width: 100%; 
+  height: 100%;
+  padding: 4%;
+  background-color: rgba(0,0,0,0.6);
+  transition: visibility 175ms, opacity 175ms;
+}
+.dropzone .gradient-border {
+  --border-width: 3px;
 
-/* Sprites */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #ADB9D8;
+  background: #19233B;
+  border-radius: var(--border-width);
+}
+.dropzone .gradient-border::after {
+  position: absolute;
+  content: "";
+  top: calc(-1 * var(--border-width));
+  left: calc(-1 * var(--border-width));
+  z-index: -1;
+  width: calc(100% + var(--border-width) * 2);
+  height: calc(100% + var(--border-width) * 2);
+  background: linear-gradient(
+    60deg,
+    hsl(224, 85%, 66%),
+    hsl(269, 85%, 66%),
+    hsl(314, 85%, 66%),
+    hsl(359, 85%, 66%),
+    hsl(44, 85%, 66%),
+    hsl(89, 85%, 66%),
+    hsl(134, 85%, 66%),
+    hsl(179, 85%, 66%)
+  );
+  background-size: 300% 300%;
+  background-position: 0 50%;
+  border-radius: calc(2 * var(--border-width));
+  animation: moveGradient 4s alternate infinite;
+}
+@keyframes moveGradient {
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+
+/* Sprites and images */
 .gr-01, .gr-04a, .gr-04b, .gr-04c {
   background-image: url('../assets/gr04.svg');
   background-repeat: no-repeat;

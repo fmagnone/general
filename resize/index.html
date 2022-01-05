@@ -14,7 +14,7 @@
     <!-- Add jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Title -->
-    <title>Demo page</title>
+    <title>Free Resize Image - Demo v1</title>
 </head>
 
 <body>
@@ -40,50 +40,54 @@
             </div>
         </div>
     </nav>
-    <!-- Main Title -->
-    <div class="container px-4 px-lg-5 pt-3 text-white">
-        <div class="d-flex align-items-center">
-            <div class="gr-01"></div>
-            <h1 class=""><b>Free</b> Resize Image</h1>
-        </div>
-        <h5>A simple and 100% free image or photo resizer with rocket speed.</h5>
-    </div>
-    </div>
-
-    <!-- Page Content Block 1 - Upload -->
     <section>
-        <!-- Horizontal box for upload -->
-        <div class="container px-4 px-lg-5">
-            <div id="liveAlertPlaceholder"></div>
-            <!-- <div class="alert alert-success" role="alert">
-                A success alert!
+        <!-- Main Title -->
+        <div class="container px-4 px-lg-5 pt-3 text-white">
+            <div class="d-flex align-items-center">
+                <div class="gr-01"></div>
+                <h1 class=""><b>Free</b> Resize Image</h1>
             </div>
-            <div class="alert alert-danger" role="alert">
-                A danger alert!
-            </div>-->
-            <div class="btn upload-box my-4 p-3 text-center transp-backgr ">
-                <div id="upload-button" class="d-flex justify-content-center align-items-center p-3">
+            <h5>A simple and 100% free image or photo resizer with rocket speed.</h5>
+        </div>
+
+        <!-- Page Content Block 1 - Upload -->
+        <div class="container px-4 px-lg-5">
+            <!-- Message box -->
+            <div id="liveAlertPlaceholder"></div>
+            <!-- Drop zone full page -->
+            <div style="visibility:hidden; opacity:0;" class="dropzone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+                <div class="drop-inner-border gradient-border">
+                    <p class="mb-0">Drop your file!</p>
+                    <p class="fs-6 pe-2">(up to resolution 5,000 x 5,000 px)</p>
+                    <p class="fs-6 pe-2 mb-0">Supported formats: <div class="gr-03"></div></p>
+                </div>
+            </div>
+
+
+            <!-- Upload box -->
+            <!--<div id="uploadBox" class="btn upload-box my-4 p-3 text-center transp-backgr" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">-->
+            <div id="uploadBox" class="btn upload-box my-4 p-3 text-center transp-backgr">
+                <div class="d-flex justify-content-center align-items-center p-3">
                     <div class="gr-02"></div>
                     <p class="upload-box-button-text px-2 mt-3 mb-0">Upload</p>
                 </div>
-                <p class="fs-5 fw-bold mb-2 m-0">Drop an image or paste URL (up to resolution 5,000 x 5,000
-                    px), <br />
+                <p class="fs-5 fw-bold mb-2 m-0">Drop an image or paste URL 
+                    (up to resolution 5,000 x 5,000 px), <br />
                     we manage everything else.</p>
                 <div class="d-flex justify-content-center align-items-center p-3">
                     <p class="fs-6 pe-2 mb-0">Supported formats: </p>
                     <div class="gr-03"></div>
                 </div>
             </div>
+            <!-- Upload buttons -->
+            <div class="container-fluid text-center">
+                <input id="inputUploadFromFile" style="display:none" type="file" />
+                <button id="btnUploadFromFile" class="btn btn-upload_from" type="submit">From Computer</button>
+                <button id="btnUploadFromUrl" class="btn btn-upload_from" type="submit">From URL (Ctrl + V)</button>
+                <button id="btnUploadFromPaste" class="btn btn-upload_from disabled" type="submit">Paste image (Crtl +
+                    V)</button>
+            </div>
         </div>
-        <!-- Upload buttons -->
-        <div class="container-fluid text-center">
-            <input id="inputUploadFromFile" style="display:none" type="file" /> 
-            <button id="btnUploadFromFile" class="btn btn-upload_from" type="file">From Computer</button>
-            <button id="btnUploadFromUrl" class="btn btn-upload_from" type="submit">From URL (Ctrl + V)</button>
-            <button id="btnUploadFromPaste" class="btn btn-upload_from disabled" type="submit">Paste image (Crtl + V)</button>
-        </div>
-
-
     </section>
     <!-- Page Content Block 2 -->
     <section>
@@ -183,7 +187,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
-    
+
 </body>
 
 </html>

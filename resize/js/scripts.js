@@ -20,22 +20,16 @@ function alert_message(message, type) {
     setTimeout(function () { wrapper.parentNode.removeChild(wrapper);; }, duration);
 }
 
-// Buttons click
-//function buttonFromUrl() {
-    //getClipboardContents();
-//}
+// Buttons actions
 $(document).ready(function () {
-    // Image from File
-    $('#btnUploadFromFile').click(function(){ 
-        $('#inputUploadFromFile').trigger('click'); 
-        // TO BE DEVELOPED
-    });
-    // Image from URL
-    $('#btnUploadFromUrl').click(function(){ 
-        getClipboardContents();
-    });
+    // Image from File button or general box
+    $('#uploadBox').click(function () { getManualUploadContents(); });
+    $('#btnUploadFromFile').click(function () { getManualUploadContents(); });
+
+    // Image from URL button
+    $('#btnUploadFromUrl').click(function () { getClipboardContents(); });
 });
-//inputUploadFromFile btnUploadFromFile
+
 
 // Ctr + V pressed
 $(document).ready(function () {
@@ -61,10 +55,17 @@ $(document).ready(function () {
     });
 });
 
-// Get Clipboard Contents and send a message
+// Get Contents and send a message
+function getManualUploadContents() {
+    $('#inputUploadFromFile').trigger('click');
+    // TO BE DEVELOPED
+
+
+    alert_message('Manual upload contents to be developed.<br/>', 'secondary');
+};
 async function getClipboardContents() {
     let pasted_data = "(no data)";
-    
+
     try {
         // Read image data
         const img = await navigator.clipboard.read();
@@ -79,4 +80,58 @@ async function getClipboardContents() {
         alert_message('Sorry, in this case we are not allowed to catch the data, please try another method!', 'danger')
         console.error('Failed to read clipboard contents: ', err);
     }
+};
+
+
+/* lastTarget is set first on dragenter, then compared with during dragleave. */
+var lastTarget = null;
+
+window.addEventListener("dragenter", viewDrop);
+window.addEventListener("dragleave", hideDrop);
+
+function viewDrop(e) {
+    // over the window
+    lastTarget = e.target; // cache the last target here
+
+    // unhide our dropzone overlay
+    document.querySelector(".dropzone").style.visibility = "";
+    document.querySelector(".dropzone").style.opacity = 1;
+};
+
+function hideDrop(e) {
+    // leaving the window
+    if (e.target === lastTarget || e.target === document) {
+        document.querySelector(".dropzone").style.visibility = "hidden";
+        document.querySelector(".dropzone").style.opacity = 0;
+    }
+};
+
+function dropHandler(e) {
+    console.log('File(s) dropped');
+    hideDrop(e);
+
+    // Prevent default behavior (Prevent file from being opened)
+    e.preventDefault();
+    
+    // TO BE DEVELOPED
+    if (e.dataTransfer.items) {
+        // Use DataTransferItemList interface to access the file(s)
+        for (var i = 0; i < e.dataTransfer.items.length; i++) {
+            // If dropped items aren't files, reject them
+            if (e.dataTransfer.items[i].kind === 'file') {
+                var file = e.dataTransfer.items[i].getAsFile();
+                console.log('... file reject [' + i + '].name = ' + file.name);
+            }
+        }
+    } else {
+        // Use DataTransfer interface to access the file(s)
+        for (var i = 0; i < e.dataTransfer.files.length; i++) {
+            console.log('... file B [' + i + '].name = ' + e.dataTransfer.files[i].name);
+        }
+    }
+}
+function dragOverHandler(e) {
+    //console.log('File(s) is now in drop zone');
+    // Prevent default behavior (Prevent file from being opened)
+    e.preventDefault();
 }
