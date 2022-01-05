@@ -1,26 +1,11 @@
+
 /*!
-* 
-* 
-* 
+* Free Resize Image 
+* Copyright 2022
 */
-// JavaScript Coding
 // General variables
 
-
-// Alert messages
-var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
-var duration = 5000;
-
-function alert_message(message, type) {
-    var wrapper = document.createElement('div')
-    wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
-
-    alertPlaceholder.append(wrapper)
-
-    setTimeout(function () { wrapper.parentNode.removeChild(wrapper);; }, duration);
-}
-
-// Buttons actions
+// Buttons Action Detection
 $(document).ready(function () {
     // Image from File button or general box
     $('#uploadBox').click(function () { getManualUploadContents(); });
@@ -30,8 +15,7 @@ $(document).ready(function () {
     $('#btnUploadFromUrl').click(function () { getClipboardContents(); });
 });
 
-
-// Ctr + V pressed
+// Ctrl + V Detection
 $(document).ready(function () {
     var ctrlDown = false,
         ctrlKey = 17,
@@ -55,10 +39,22 @@ $(document).ready(function () {
     });
 });
 
-// Get Contents and send a message
+// Alert Message
+var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+var duration = 5000;
+function alert_message(message, type) {
+    var wrapper = document.createElement('div')
+    wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+
+    alertPlaceholder.append(wrapper)
+
+    setTimeout(function () { wrapper.parentNode.removeChild(wrapper);; }, duration);
+}
+
+// Get Contents
 function getManualUploadContents() {
     $('#inputUploadFromFile').trigger('click');
-    
+
     // Select File
     const inputElement = document.getElementById("inputUploadFromFile");
     inputElement.addEventListener("change", handleFiles, false);
@@ -90,21 +86,21 @@ async function getClipboardContents() {
 
         console.log('Pasted content: ', img);
         console.log('Pasted content: ', text);
-        
-        if(text != "") {
+
+        if (text != "") {
             alert_message('We catch some text from Ctrl+V with this info:<br/>' + pasted_data, 'success');
-        } 
-        else 
-        {
+        }
+        else {
             alert_message('We catch something with Ctrl+V but is not an URL... Please copy your URL and try again!', 'danger');
         }
-        
+
     } catch (err) {
         alert_message('Sorry, in this case we are not allowed to catch the data, please try another method!', 'danger')
         console.error('Failed to read clipboard contents: ', err);
     }
 };
 
+/*
 window.addEventListener("dragenter", viewDrop);
 window.addEventListener("dragleave", hideDrop);
 var lastTarget = null;
@@ -124,7 +120,6 @@ function hideDrop(e) {
         document.querySelector(".dropzone").style.opacity = 0;
     }
 };
-
 function dropHandler(e) {
     // Hide drop windows
     hideDrop(e);
@@ -147,24 +142,24 @@ function dropHandler(e) {
         // TO BE DEVELOPED
 
         // Use DataTransferItemList interface to access the file(s)
-        /*
-        for (var i = 0; i < e.dataTransfer.items.length; i++) {
-            // If dropped items aren't files, reject them
-            if (e.dataTransfer.items[i].kind === 'file') {
-                var file = e.dataTransfer.items[i].getAsFile();
-                console.log('... file reject [' + i + '].name = ' + file.name);
-            }
-        }
-        */
+        
+        //for (var i = 0; i < e.dataTransfer.items.length; i++) {
+        //    // If dropped items aren't files, reject them
+        //    if (e.dataTransfer.items[i].kind === 'file') {
+        //        var file = e.dataTransfer.items[i].getAsFile();
+        //        console.log('... file reject [' + i + '].name = ' + file.name);
+        //    }
+        //}
+        
     } else {
         console.log("Error uploading?");
         alert_message('We find some error uploading? Please try again', 'danger');
-        /*
+        
         // Use DataTransfer interface to access the file(s)
-        for (var i = 0; i < e.dataTransfer.files.length; i++) {
-            console.log('... file B [' + i + '].name = ' + e.dataTransfer.files[i].name);
-        }
-        */
+        //for (var i = 0; i < e.dataTransfer.files.length; i++) {
+        //    console.log('... file B [' + i + '].name = ' + e.dataTransfer.files[i].name);
+        //}
+        
     }
 }
 function dragOverHandler(e) {
@@ -172,3 +167,8 @@ function dragOverHandler(e) {
     // Prevent default behavior (Prevent file from being opened)
     e.preventDefault();
 }
+*/
+
+
+// FilePond testing
+

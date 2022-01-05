@@ -16,6 +16,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Title -->
     <title>Free Resize Image - Demo v1</title>
+
+
+    <!-- Testing Filepond -->
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+        rel="stylesheet" />
 </head>
 
 <body>
@@ -48,7 +54,7 @@
                 <div class="gr-01"></div>
                 <h1 class=""><b>Free</b> Resize Image</h1>
             </div>
-            <h5>A simple and 100% free image or photo resizer with rocket speed.</h5>
+            <h5 class="mb-5">A simple and free image or photo resizer with rocket speed.</h5>
         </div>
 
         <!-- Page Content Block 1 - Upload -->
@@ -70,11 +76,10 @@
             <div id="uploadBox" class="btn upload-box my-4 p-3 text-center transp-backgr">
                 <div class="d-flex justify-content-center align-items-center p-3">
                     <div class="gr-02"></div>
-                    <p class="upload-box-button-text px-2 mt-3 mb-0">Upload</p>
+                    <p class="upload-box-button-text px-3 mt-3 mb-0">Drop your image</p>
                 </div>
-                <p class="fs-5 fw-bold mb-2 m-0">Drop an image or paste URL
-                    (up to resolution 5,000 x 5,000 px), <br />
-                    we manage everything else.</p>
+                <p class=" fw-bold mb-2 m-0">Or click to upload or paste an URL,<br />
+                    (up to resolution 5,000 x 5,000 px)</p>
                 <div class="d-flex justify-content-center align-items-center p-3">
                     <p class="fs-6 pe-2 mb-0">Supported formats: </p>
                     <div class="gr-03"></div>
@@ -82,6 +87,7 @@
             </div>
             <!-- Upload buttons -->
             <div class="container-fluid text-center">
+                <p class="text-white-50 mb-1">Other options to upload:</p>
                 <input id="inputUploadFromFile" style="display:none" type="file" multiple />
                 <button id="btnUploadFromFile" class="btn btn-upload_from m-2" type="submit">From Computer</button>
                 <button id="btnUploadFromUrl" class="btn btn-upload_from m-2" type="submit">From URL (Ctrl + V)</button>
@@ -90,15 +96,31 @@
             </div>
         </div>
     </section>
+    <!-- Page Content Ads Block -->
+    <section>
+        <!-- Horizontal bar for ads -->
+        <div class="card text-white my-5 align-middle text-center transp-backgr">
+            <div class="card-body">
+                <img class="img-fluid mb-4 mb-lg-0" src="https://dummyimage.com/970x90/cccccc/666666" alt="..." />
+            </div>
+        </div>
+    </section>
+    <!-- Testing section (temporary) -->
+    <section>
+        <!-- Main Title -->
+        <div class="container px-4 px-lg-5 pt-3 text-white">
+
+            New section
+            <input type="file" />
+
+            <input type="file" class="filepond" name="filepond" multiple data-allow-reorder="true"
+                data-max-file-size="3MB" data-max-files="3">
+
+        </div>
+    </section>
     <!-- Page Content Block 2 -->
     <section>
         <div class="container px-4 px-lg-5">
-            <!-- Horizontal bar for ads -->
-            <div class="card text-white my-5 align-middle text-center transp-backgr">
-                <div class="card-body">
-                    <img class="img-fluid mb-4 mb-lg-0" src="https://dummyimage.com/970x90/cccccc/666666" alt="..." />
-                </div>
-            </div>
             <!-- Content Row with cards -->
             <div class="row gx-lg-5 text-center text-white">
                 <h2 class="my-5">Photo editing 100% free, in your browser</h2>
@@ -131,10 +153,11 @@
             <div class="row mb-5 text-white">
                 <h2 class="pb-4">How we do it?</h2>
                 <div class="col-sm">
-                    <p>We can compress the image or resize your photo. First will reduce file size without having to
-                        resize it. Image quality will suffer as you increase compression and start losing more data.
-                        Second will decrease the pixels it takes to store the image. Reducing image size doesn’t reduce
-                        image quality, although it may lose small details.</p>
+                    <p>Free Resize Image is an online app that allows you to compress your image or photo optimizing
+                        quality. First method will reduce image quality. Quality will suffer as you increase compression
+                        and start losing data. Second method is to decrease the pixels it takes to store the image.
+                        Reducing image size doesn’t reduce image quality, although it may lose small details.
+                    </p>
                     <p>Photos from modern cellphones and cameras usually have over 6 million pixels, while most
                         cellphones, tablets, notebook or TV screens have only about 1.5 million pixels, which means you
                         end up seeing a resized version of the image (you only use the full image if you print it). So
@@ -182,10 +205,18 @@
         </div>
     </footer>
 
+
+    <!-- Testing Filepond -->
+    <!--  <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>-->
+
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="js/scripts.js"></script>
+
+    <!-- Core theme JS -->
+    <script src="js/scripts.js"></script> 
+    <!-- <script type="module" src="js/scripts.js"></script> -->
+
 
 </body>
 
