@@ -9,7 +9,7 @@
 
 // Alert messages
 var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
-var duration = 4000;
+var duration = 5000;
 
 function alert_message(message, type) {
     var wrapper = document.createElement('div')
@@ -58,10 +58,24 @@ $(document).ready(function () {
 // Get Contents and send a message
 function getManualUploadContents() {
     $('#inputUploadFromFile').trigger('click');
-    // TO BE DEVELOPED
+    
+    // Select File
+    const inputElement = document.getElementById("inputUploadFromFile");
+    inputElement.addEventListener("change", handleFiles, false);
+    function handleFiles() {
+        const fileList = this.files;
 
-
-    alert_message('Manual upload contents to be developed.<br/>', 'secondary');
+        // Get file information
+        const uploaded_files_count = fileList.length;
+        let uploaded_files_names = [];
+        console.log("Files uploaded: ", uploaded_files_count)
+        for (let i = 0, uploaded_files_count = fileList.length; i < uploaded_files_count; i++) {
+            const file = fileList[i];
+            uploaded_files_names.push(file.name);
+            console.log('File ' + i + ' name = ' + file.name);
+        }
+        alert_message('We catch ' + uploaded_files_count + ' file(s) dopped with this info:<br/>' + uploaded_files_names, 'success');
+    }
 };
 async function getClipboardContents() {
     let pasted_data = "(no data)";
@@ -75,19 +89,25 @@ async function getClipboardContents() {
         pasted_data = text;
 
         console.log('Pasted content: ', img);
-        alert_message('We catch a Ctrl+V with this info.<br/>' + pasted_data, 'success');
+        console.log('Pasted content: ', text);
+        
+        if(text != "") {
+            alert_message('We catch some text from Ctrl+V with this info:<br/>' + pasted_data, 'success');
+        } 
+        else 
+        {
+            alert_message('We catch something with Ctrl+V but is not an URL... Please copy your URL and try again!', 'danger');
+        }
+        
     } catch (err) {
         alert_message('Sorry, in this case we are not allowed to catch the data, please try another method!', 'danger')
         console.error('Failed to read clipboard contents: ', err);
     }
 };
 
-
-/* lastTarget is set first on dragenter, then compared with during dragleave. */
-var lastTarget = null;
-
 window.addEventListener("dragenter", viewDrop);
 window.addEventListener("dragleave", hideDrop);
+var lastTarget = null;
 
 function viewDrop(e) {
     // over the window
@@ -97,7 +117,6 @@ function viewDrop(e) {
     document.querySelector(".dropzone").style.visibility = "";
     document.querySelector(".dropzone").style.opacity = 1;
 };
-
 function hideDrop(e) {
     // leaving the window
     if (e.target === lastTarget || e.target === document) {
@@ -107,15 +126,28 @@ function hideDrop(e) {
 };
 
 function dropHandler(e) {
-    console.log('File(s) dropped');
+    // Hide drop windows
     hideDrop(e);
 
     // Prevent default behavior (Prevent file from being opened)
     e.preventDefault();
     
-    // TO BE DEVELOPED
     if (e.dataTransfer.items) {
+        let dropped_files_count = e.dataTransfer.files.length;
+        let dropped_files_names = [];
+
+        console.log('File(s) dropped: ' + dropped_files_count);
+        
+        for (var i = 0; i < e.dataTransfer.files.length; i++) {
+            dropped_files_names.push(e.dataTransfer.files[i].name);
+            console.log('File ' + i + ' name = ' + e.dataTransfer.files[i].name);
+        }
+        alert_message('We catch ' + dropped_files_count + ' file(s) dopped with this info:<br/>' + dropped_files_names, 'success');
+
+        // TO BE DEVELOPED
+
         // Use DataTransferItemList interface to access the file(s)
+        /*
         for (var i = 0; i < e.dataTransfer.items.length; i++) {
             // If dropped items aren't files, reject them
             if (e.dataTransfer.items[i].kind === 'file') {
@@ -123,11 +155,16 @@ function dropHandler(e) {
                 console.log('... file reject [' + i + '].name = ' + file.name);
             }
         }
+        */
     } else {
+        console.log("Error uploading?");
+        alert_message('We find some error uploading? Please try again', 'danger');
+        /*
         // Use DataTransfer interface to access the file(s)
         for (var i = 0; i < e.dataTransfer.files.length; i++) {
             console.log('... file B [' + i + '].name = ' + e.dataTransfer.files[i].name);
         }
+        */
     }
 }
 function dragOverHandler(e) {

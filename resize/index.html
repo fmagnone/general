@@ -52,9 +52,7 @@
 
         <!-- Page Content Block 1 - Upload -->
         <div class="container px-4 px-lg-5">
-            <!-- Message box -->
-            <div id="liveAlertPlaceholder"></div>
-            <!-- Drop zone full page -->
+            <!-- Hidden drop zone (full page) -->
             <div style="visibility:hidden; opacity:0;" class="dropzone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
                 <div class="drop-inner-border gradient-border">
                     <p class="mb-0">Drop your file!</p>
@@ -62,10 +60,9 @@
                     <p class="fs-6 pe-2 mb-0">Supported formats: <div class="gr-03"></div></p>
                 </div>
             </div>
-
-
+            <!-- Message box -->
+            <div id="liveAlertPlaceholder"></div>
             <!-- Upload box -->
-            <!--<div id="uploadBox" class="btn upload-box my-4 p-3 text-center transp-backgr" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">-->
             <div id="uploadBox" class="btn upload-box my-4 p-3 text-center transp-backgr">
                 <div class="d-flex justify-content-center align-items-center p-3">
                     <div class="gr-02"></div>
@@ -81,12 +78,13 @@
             </div>
             <!-- Upload buttons -->
             <div class="container-fluid text-center">
-                <input id="inputUploadFromFile" style="display:none" type="file" />
+                <input id="inputUploadFromFile" style="display:none" type="file" multiple/>
                 <button id="btnUploadFromFile" class="btn btn-upload_from" type="submit">From Computer</button>
                 <button id="btnUploadFromUrl" class="btn btn-upload_from" type="submit">From URL (Ctrl + V)</button>
                 <button id="btnUploadFromPaste" class="btn btn-upload_from disabled" type="submit">Paste image (Crtl +
                     V)</button>
             </div>
+            
         </div>
     </section>
     <!-- Page Content Block 2 -->
