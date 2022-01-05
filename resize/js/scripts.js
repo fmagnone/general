@@ -21,9 +21,21 @@ function alert_message(message, type) {
 }
 
 // Buttons click
-function buttonFromUrl() {
-    getClipboardContents();
-}
+//function buttonFromUrl() {
+    //getClipboardContents();
+//}
+$(document).ready(function () {
+    // Image from File
+    $('#btnUploadFromFile').click(function(){ 
+        $('#inputUploadFromFile').trigger('click'); 
+        // TO BE DEVELOPED
+    });
+    // Image from URL
+    $('#btnUploadFromUrl').click(function(){ 
+        getClipboardContents();
+    });
+});
+//inputUploadFromFile btnUploadFromFile
 
 // Ctr + V pressed
 $(document).ready(function () {

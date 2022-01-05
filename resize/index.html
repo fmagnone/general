@@ -77,9 +77,10 @@
         </div>
         <!-- Upload buttons -->
         <div class="container-fluid text-center">
-            <button class="btn btn-upload_from" type="file">From Computer</button>
-            <button class="btn btn-upload_from" onclick="buttonFromUrl()" type="submit">From URL (Ctrl + V)</button>
-            <button class="btn btn-upload_from disabled" type="submit">Paste image (Crtl + V)</button>
+            <input id="inputUploadFromFile" style="display:none" type="file" /> 
+            <button id="btnUploadFromFile" class="btn btn-upload_from" type="file">From Computer</button>
+            <button id="btnUploadFromUrl" class="btn btn-upload_from" type="submit">From URL (Ctrl + V)</button>
+            <button id="btnUploadFromPaste" class="btn btn-upload_from disabled" type="submit">Paste image (Crtl + V)</button>
         </div>
 
 
