@@ -20,7 +20,7 @@
 
 <body>
     <!-- Responsive navbar-->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-sm-top">
         <div class="container px-5">
             <a class="navbar-brand" href="#!">Free Resize Image</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -54,11 +54,14 @@
         <!-- Page Content Block 1 - Upload -->
         <div class="container px-4 px-lg-5">
             <!-- Hidden drop zone (full page) -->
-            <div style="visibility:hidden; opacity:0;" class="dropzone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+            <div style="visibility:hidden; opacity:0;" class="dropzone" ondrop="dropHandler(event);"
+                ondragover="dragOverHandler(event);">
                 <div class="drop-inner-border gradient-border">
                     <p class="mb-0">Drop your file!</p>
                     <p class="fs-6 pe-2">(up to resolution 5,000 x 5,000 px)</p>
-                    <p class="fs-6 pe-2 mb-0">Supported formats: <div class="gr-03"></div></p>
+                    <p class="fs-6 pe-2 mb-0">Supported formats:
+                    <div class="gr-03"></div>
+                    </p>
                 </div>
             </div>
             <!-- Message box -->
@@ -69,7 +72,7 @@
                     <div class="gr-02"></div>
                     <p class="upload-box-button-text px-2 mt-3 mb-0">Upload</p>
                 </div>
-                <p class="fs-5 fw-bold mb-2 m-0">Drop an image or paste URL 
+                <p class="fs-5 fw-bold mb-2 m-0">Drop an image or paste URL
                     (up to resolution 5,000 x 5,000 px), <br />
                     we manage everything else.</p>
                 <div class="d-flex justify-content-center align-items-center p-3">
@@ -79,13 +82,13 @@
             </div>
             <!-- Upload buttons -->
             <div class="container-fluid text-center">
-                <input id="inputUploadFromFile" style="display:none" type="file" multiple/>
+                <input id="inputUploadFromFile" style="display:none" type="file" multiple />
                 <button id="btnUploadFromFile" class="btn btn-upload_from" type="submit">From Computer</button>
                 <button id="btnUploadFromUrl" class="btn btn-upload_from" type="submit">From URL (Ctrl + V)</button>
                 <button id="btnUploadFromPaste" class="btn btn-upload_from disabled" type="submit">Paste image (Crtl +
                     V)</button>
             </div>
-            
+
         </div>
     </section>
     <!-- Page Content Block 2 -->
