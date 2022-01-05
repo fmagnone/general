@@ -6,7 +6,7 @@
 
 /* General Style */
 body {
-  font-family: 'Avenir', Helvetica, sans-serif;
+  font-family: 'Lato', Helvetica, sans-serif;
   background: rgb(50,63,93);
   background: linear-gradient(156deg, rgba(50,63,93,1) 0%, rgba(48,61,90,1) 25%, rgba(8,11,16,1) 100%);
 }
@@ -103,7 +103,11 @@ body {
 
 
 /* Font Face Declaration */
+/*
 @font-face {
   font-family: 'Avenir';
   src: url('../fonts/Avenir.eot?#iefix') format('embedded-opentype'),  url('../fonts/Avenir.woff') format('woff'), url('../fonts/Avenir.ttf')  format('truetype'), url('../fonts/Avenir.svg#Avenir') format('svg');
 }
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
