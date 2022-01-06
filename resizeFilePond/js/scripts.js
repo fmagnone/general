@@ -173,19 +173,81 @@ function dragOverHandler(e) {
 // FilePond Coding
 
 // Register the plugin
-FilePond.registerPlugin(FilePondPluginImageResize);
-FilePond.registerPlugin(FilePondPluginImagePreview);
+FilePond.registerPlugin(FilePondPluginImageResize, FilePondPluginImagePreview);
 
-// Get a file input reference
-const input = document.querySelector('input[type="file"]');
-
-// Create a FilePond instance
-const pond = FilePond.create(input);
-
+// Options
 FilePond.setOptions({
     server: {
         process: './process',
         fetch: null,
         revert: null,
+    }
+});
+
+// Get a file input reference
+const input = document.querySelector('input[type="file"]');
+
+// Create a FilePond instance
+//const pond = FilePond.create(input);
+
+// const pond = FilePond.create(input);
+const pond = FilePond.create(input, {
+    server: {
+        url: '/',
+        timeout: 7000,
+        process: './process',
+        revert: './revert',
+        restore: './restore/',
+        load: './load/',
+        fetch: './fetch/',
     },
 });
+
+
+/*
+FilePond.setOptions({
+    server:{
+        url: 'http://127.0.0.1:5500',
+        timeout: 7000,
+        process: {
+            url: './process',
+            method: 'POST',
+            withCredentials: false,
+            headers: {},
+            timeout: 7000,
+            onload: null,
+            onerror: null,
+            ondata: null,
+        },
+    },
+});
+*/
+
+
+
+
+////////
+// Upload method without framework
+/*
+const handleImageUpload = event => {
+    const files = event.target.files
+    const formData = new FormData()
+    formData.append('myFile', files[0])
+  
+    fetch('/saveImage', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data.path)
+    })
+    .catch(error => {
+      console.error(error)
+    })
+  }
+  
+  document.querySelector('#fileUpload').addEventListener('change', event => {
+    handleImageUpload(event)
+  })
+  */
