@@ -57,13 +57,18 @@
             </div>
             <h5 class="mb-5">A simple and free image or photo resizer with rocket speed.</h5>
         </div>
+        
 
         <!-- Page Content Block 1 - Upload -->
         <div class="container px-4 px-lg-5">
-            <!-- FilePond Upload -->
-            <input id="fileUpload" type="file" class="filepond" name="filepond" multiple data-allow-reorder="true"
-                data-max-file-size="3MB" data-max-files="3">
+            <!-- Message box -->
+            <div id="liveAlertPlaceholder"></div>
 
+            <!-- FilePond Upload -->
+            <form method="POST">
+                <input id="fileUpload" type="file" class="filepond" name="filepond" multiple data-allow-reorder="true"
+                    data-max-file-size="3MB" data-max-files="3">
+            </form>
             <!-- Upload buttons -->
             <div class="container-fluid text-center">
                 <p class="text-white-50 mb-1">Other options to upload:</p>

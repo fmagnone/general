@@ -43,12 +43,13 @@ $(document).ready(function () {
 var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 var duration = 5000;
 function alert_message(message, type) {
-    var wrapper = document.createElement('div')
-    wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
-
-    alertPlaceholder.append(wrapper)
-
-    setTimeout(function () { wrapper.parentNode.removeChild(wrapper);; }, duration);
+    var wrapper = document.createElement('div');
+    wrapper.innerHTML = ('<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+    
+    if(alertPlaceholder) { 
+        alertPlaceholder.append(wrapper);
+        setTimeout(function () { wrapper.parentNode.removeChild(wrapper);; }, duration);
+    };
 }
 
 // Get Contents
@@ -95,8 +96,8 @@ async function getClipboardContents() {
         }
 
     } catch (err) {
-        alert_message('Sorry, in this case we are not allowed to catch the data, please try another method!', 'danger')
         console.error('Failed to read clipboard contents: ', err);
+        alert_message('Sorry, in this case we are not allowed to catch the data, please try another method!', 'danger')
     }
 };
 
@@ -174,15 +175,6 @@ function dragOverHandler(e) {
 
 // Register the plugin
 FilePond.registerPlugin(FilePondPluginImageResize, FilePondPluginImagePreview);
-
-// Options
-FilePond.setOptions({
-    server: {
-        process: './process',
-        fetch: null,
-        revert: null,
-    }
-});
 
 // Get a file input reference
 const input = document.querySelector('input[type="file"]');
