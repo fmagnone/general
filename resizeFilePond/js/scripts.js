@@ -187,11 +187,11 @@ const pond = FilePond.create(input, {
     server: {
         url: '/',
         timeout: 7000,
-        process: './process',
+        /*process: './process',
         revert: './revert',
         restore: './restore/',
         load: './load/',
-        fetch: './fetch/',
+        fetch: './fetch/',*/
     },
 });
 
