@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <meta name="theme-color" content="#2A3550">
+    <!-- Bootstrap CSS and Custom CSS-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="css/styles.css" rel="stylesheet" />
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- FilePond-->
+    <!-- Copyright (c) 2019 PQINA | Rik Schennink <rik@pqina.nl> -->
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+        rel="stylesheet" />
+
+    <!-- Title -->
+    <title>Free Resize Image - Demo v1.1</title>    
+</head>
+
+<body>
+    <!-- Responsive navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-sm-top">
+        <div class="container px-5">
+            <a class="navbar-brand" href="#!">Free Resize Image</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item ms-3">
+                        <a class="nav-link dropdown-toggle disabled" href="#!">English</a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <a class="nav-link" href="contact_us.html">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <section>
+        <!-- Main Title -->
+        <div class="container px-4 px-lg-5 pt-3 text-white">
+            <div class="d-flex align-items-center">
+                <div class="gr-01"></div>
+                <h1 class=""><b>Free</b> Resize Image</h1>
+            </div>
+            <h5 class="mb-5">A simple and free image or photo resizer with rocket speed.</h5>
+        </div>
+
+        <!-- Page Content Block 1 - Upload -->
+        <div class="container px-4 px-lg-5">
+            <!-- FilePond Upload -->
+            <input type="file" class="filepond" name="filepond" multiple data-allow-reorder="true"
+                data-max-file-size="3MB" data-max-files="3">
+
+            <!-- Upload buttons -->
+            <div class="container-fluid text-center">
+                <p class="text-white-50 mb-1">Other options to upload:</p>
+                <input id="inputUploadFromFile" style="display:none" type="file" multiple />
+                <button id="btnUploadFromUrl" class="btn btn-upload_from m-2" type="submit">From URL (Ctrl + V)</button>
+                <button id="btnUploadFromPaste" class="btn btn-upload_from m-2 disabled" type="submit">Paste image (Crtl
+                    + V)</button>
+            </div>
+        </div>
+    </section>
+    <!-- Page Content Ads Block -->
+    <section>
+        <!-- Horizontal bar for ads -->
+        <div class="card text-white my-5 align-middle text-center transp-backgr">
+            <div class="card-body">
+                <img class="img-fluid mb-4 mb-lg-0" src="https://dummyimage.com/970x90/cccccc/666666" alt="..." />
+            </div>
+        </div>
+    </section>
+    <!-- Page Content Block 2 -->
+    <section>
+        <div class="container px-4 px-lg-5">
+            <!-- Content Row with cards -->
+            <div class="row gx-lg-5 text-center text-white">
+                <h2 class="my-5">Photo editing 100% free, in your browser</h2>
+                <div class="col-md-4 mb-5">
+                    <div class="h-100">
+                        <div class="gr-04a mx-auto"></div>
+                        <p class="card-text">Shrink and enlarge your photos, crop for print or social media, flip or
+                            rotate
+                            for free.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <div class="h-100">
+                        <div class="gr-04b mx-auto"></div>
+                        <p class="card-text">Reduce and customize file properties and pixels to a desired quality or
+                            size.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <div class="h-100">
+                        <div class="gr-04c mx-auto"></div>
+                        <p class="card-text">Get web-ready image files by converting from BMP, GIF. JPG or PNG to a
+                            compressed JPG.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="spacer"></div>
+            <!-- Text Description -->
+            <div class="row mb-5 text-white">
+                <h2 class="pb-4">How we do it?</h2>
+                <div class="col-sm">
+                    <p>Free Resize Image is an online app that allows you to compress your image or photo optimizing
+                        quality. First method will reduce image quality. Quality will suffer as you increase compression
+                        and start losing data. Second method is to decrease the pixels it takes to store the image.
+                        Reducing image size doesn’t reduce image quality, although it may lose small details.
+                    </p>
+                    <p>Photos from modern cellphones and cameras usually have over 6 million pixels, while most
+                        cellphones, tablets, notebook or TV screens have only about 1.5 million pixels, which means you
+                        end up seeing a resized version of the image (you only use the full image if you print it). So
+                        if you resize your image, decreasing its width and height to a half, your image would have about
+                        the same number of pixels as the screens that will display it, and you wouldn’t be losing any
+                        quality or detail, even looking at your image in full screen mode.</p>
+                </div>
+                <div class="col-sm">
+                    <p>Digital images are composed by pixels, and each of them has a color, represented as a combination
+                        of three basic colors (red, green and blue). To store each of these pixels, 3 bytes (24 ones or
+                        zeros) are generally used. When an image is large, it may have millions of pixels, and that
+                        means storing all information for an image like that in a computer or any device will take
+                        millions of bytes.</p>
+                    <p>When a camera or cellphone says it takes 10 megapixels photos, it means that each photo has 10
+                        million pixels (mega = million). And having 10 million pixels means it takes 30 million bytes
+                        (or 30 megabytes) to store that photo (which is a lot of space!). If you want to send this photo
+                        (or many photos) to a friend by e-mail, it will have to transfer 30 megabytes of data and it
+                        will take a while to upload it and a lot for the recipient to download it later.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer-->
+    <footer class="py-4">
+        <!-- Footer nav -->
+        <nav class="nav mb-2">
+            <div class="container-fluid">
+                <ul class="nav ms-auto justify-content-center mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!">Terms</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!">Privacy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Footer text -->
+        <div class="container px-4 px-lg-5 py-2">
+            <p class="m-0 text-center text-white">2022 &copy; FreeResizeImage.com</p>
+        </div>
+    </footer>
+
+
+    <!-- Filepond -->
+    <!-- Copyright (c) 2019 PQINA | Rik Schennink <rik@pqina.nl> -->
+    <script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+
+    <script type="module">
+        
+    </script>
+
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core theme JS -->
+    <script type="module" src="js/scripts.js"></script>
+
+</body>
+</html>
