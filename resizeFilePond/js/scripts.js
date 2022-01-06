@@ -181,11 +181,13 @@ const input = document.querySelector('input[type="file"]');
 
 // Create a FilePond instance
 //const pond = FilePond.create(input);
+//console.log(input);
 
+/* url: 'http://127.0.0.1:5500/resizeFilePond/tmp/file.jpg',*/
 // const pond = FilePond.create(input);
 const pond = FilePond.create(input, {
     server: {
-        url: '/',
+        url: 'http://127.0.0.1:8080',
         timeout: 7000,
         /*process: './process',
         revert: './revert',
@@ -194,7 +196,7 @@ const pond = FilePond.create(input, {
         fetch: './fetch/',*/
     },
 });
-
+//console.log(pond);
 
 /*
 FilePond.setOptions({
