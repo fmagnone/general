@@ -1,8 +1,9 @@
-
 /*!
-* Free Resize Image 
-* Copyright 2022
+* Free Resize Image - Copyright 2022
+*
+*
 */
+
 // General variables
 
 // Buttons Action Detection
@@ -52,7 +53,7 @@ function alert_message(message, type) {
     };
 }
 
-// Get Contents
+// Get Contents Manual Upload
 function getManualUploadContents() {
     $('#inputUploadFromFile').trigger('click');
 
@@ -74,6 +75,7 @@ function getManualUploadContents() {
         alert_message('We catch ' + uploaded_files_count + ' file(s) dopped with this info:<br/>' + uploaded_files_names, 'success');
     }
 };
+// Get Contents Clipboard Upload
 async function getClipboardContents() {
     let pasted_data = "(no data)";
 
@@ -101,102 +103,126 @@ async function getClipboardContents() {
     }
 };
 
+
+// Get Content Drag and Drop - FilePond Plugin
+FilePond.registerPlugin(
+    FilePondPluginImageResize, 
+    FilePondPluginImagePreview
+);
+
+const input = document.querySelector('input[id="filePondUpload"]');
+
+// Create a FilePond instance and post files to /upload
+FilePond.create(input, {
+    server: {
+        url: 'http://127.0.0.1:5000/',
+        timeout: 7000,
+
+        process: {
+            url: './',
+            method: 'POST',
+            withCredentials: true,
+            headers: {},
+            timeout: 7000,
+            onload: null,
+            onerror: null,
+            ondata: null,
+        },
+        revert: {
+            url: '',
+            method: 'POST',
+            //withCredentials: true,
+            headers: {},
+        },
+    },
+
+    // Call back when image is added
+    imageResizeTargetWidth:256,
+    onaddfile:(err, fileItem) =>{
+        console.log(err,fileItem.getMetadata('resize'));
+    },
+    onpreparefile:(fileItem, output) =>{
+        const img = new Image();
+        img.src = URL.createObjectURL(output);
+        console.log(img.src);
+        document.body.appendChild(img);
+    },
+
+});
+
+
+
+
+//console.log(pond);
+
+
+
+//import * as FilePond from 'filepond';
+
+// FilePond.registerPlugin(FilePondPluginImageResize, FilePondPluginImagePreview);
 /*
-window.addEventListener("dragenter", viewDrop);
-window.addEventListener("dragleave", hideDrop);
-var lastTarget = null;
+const input = document.querySelector('input[type="file"]');
 
-function viewDrop(e) {
-    // over the window
-    lastTarget = e.target; // cache the last target here
+const pond = FilePond.create(input, {
+    server: {
+        url: 'http://127.0.0.1:5000',
+        timeout: 7000,
+    },
+    process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
+        // fieldName is the name of the input field
+        // file is the actual file object to send
+        const formData = new FormData();
+        formData.append(fieldName, file, file.name);
 
-    // unhide our dropzone overlay
-    document.querySelector(".dropzone").style.visibility = "";
-    document.querySelector(".dropzone").style.opacity = 1;
-};
-function hideDrop(e) {
-    // leaving the window
-    if (e.target === lastTarget || e.target === document) {
-        document.querySelector(".dropzone").style.visibility = "hidden";
-        document.querySelector(".dropzone").style.opacity = 0;
-    }
-};
-function dropHandler(e) {
-    // Hide drop windows
-    hideDrop(e);
+        const request = new XMLHttpRequest();
+        request.open('POST', 'url-to-api');
 
-    // Prevent default behavior (Prevent file from being opened)
-    e.preventDefault();
-    
-    if (e.dataTransfer.items) {
-        let dropped_files_count = e.dataTransfer.files.length;
-        let dropped_files_names = [];
+        // Should call the progress method to update the progress to 100% before calling load
+        // Setting computable to false switches the loading indicator to infinite mode
+        request.upload.onprogress = (e) => {
+            console.log(e);
+            progress(e.lengthComputable, e.loaded, e.total);
+        };
 
-        console.log('File(s) dropped: ' + dropped_files_count);
-        
-        for (var i = 0; i < e.dataTransfer.files.length; i++) {
-            dropped_files_names.push(e.dataTransfer.files[i].name);
-            console.log('File ' + i + ' name = ' + e.dataTransfer.files[i].name);
-        }
-        alert_message('We catch ' + dropped_files_count + ' file(s) dopped with this info:<br/>' + dropped_files_names, 'success');
+        // Should call the load method when done and pass the returned server file id
+        // this server file id is then used later on when reverting or restoring a file
+        // so your server knows which file to return without exposing that info to the client
+        request.onload = function () {
+            if (request.status >= 200 && request.status < 300) {
+                // the load method accepts either a string (id) or an object
+                load(request.responseText);
+            } else {
+                // Can call the error method if something is wrong, should exit after
+                error('oh no');
+            }
+        };
 
-        // TO BE DEVELOPED
+        request.send(formData);
 
-        // Use DataTransferItemList interface to access the file(s)
-        
-        //for (var i = 0; i < e.dataTransfer.items.length; i++) {
-        //    // If dropped items aren't files, reject them
-        //    if (e.dataTransfer.items[i].kind === 'file') {
-        //        var file = e.dataTransfer.items[i].getAsFile();
-        //        console.log('... file reject [' + i + '].name = ' + file.name);
-        //    }
-        //}
-        
-    } else {
-        console.log("Error uploading?");
-        alert_message('We find some error uploading? Please try again', 'danger');
-        
-        // Use DataTransfer interface to access the file(s)
-        //for (var i = 0; i < e.dataTransfer.files.length; i++) {
-        //    console.log('... file B [' + i + '].name = ' + e.dataTransfer.files[i].name);
-        //}
-        
-    }
-}
-function dragOverHandler(e) {
-    //console.log('File(s) is now in drop zone');
-    // Prevent default behavior (Prevent file from being opened)
-    e.preventDefault();
-}
+        // Should expose an abort method so the request can be cancelled
+        return {
+            abort: () => {
+                // This function is entered if the user has tapped the cancel button
+                request.abort();
+
+                // Let FilePond know the request has been cancelled
+                abort();
+            },
+        };
+    },
+});
 */
 
-// --------------------------------------------------- //
-// FilePond Coding
 
-// Register the plugin
-FilePond.registerPlugin(FilePondPluginImageResize, FilePondPluginImagePreview);
 
-// Get a file input reference
-const input = document.querySelector('input[type="file"]');
+
+/* url: 'http://127.0.0.1:5500/resizeFilePond/tmp/file.jpg',*/
+// const pond = FilePond.create(input);
 
 // Create a FilePond instance
 //const pond = FilePond.create(input);
 //console.log(input);
 
-/* url: 'http://127.0.0.1:5500/resizeFilePond/tmp/file.jpg',*/
-// const pond = FilePond.create(input);
-const pond = FilePond.create(input, {
-    server: {
-        url: 'http://127.0.0.1:5000',
-        timeout: 7000,
-        /*process: './process',
-        revert: './revert',
-        restore: './restore/',
-        load: './load/',
-        fetch: './fetch/',*/
-    },
-});
-//console.log(pond);
 
 /*
 FilePond.setOptions({
@@ -221,6 +247,7 @@ FilePond.setOptions({
 
 
 ////////
+// Get Content 
 // Upload method without framework
 /*
 const handleImageUpload = event => {
@@ -245,3 +272,7 @@ const handleImageUpload = event => {
     handleImageUpload(event)
   })
   */
+
+
+
+// Uppy
