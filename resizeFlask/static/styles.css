@@ -76,13 +76,16 @@ body {
   font-size: 1.4em;
   font-weight: 500;
 }
-.btn-upload_from {
+.btn-upload_from, .btn-download {
   background-color: #19233B;
   color: #EC4E6E;
 }
-.btn-upload_from:hover {
+.btn-upload_from:hover, .btn-download:hover {
   background-color: #071127;
   color: #EC4E6E;
+}
+.btn-download {
+  width: 100%;
 }
 .dropzone {
   position: fixed; 

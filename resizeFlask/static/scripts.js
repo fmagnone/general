@@ -5,6 +5,8 @@
 */
 
 // General variables
+let downloadName = "resized_unknown.jpg"
+let downloadURL = "";
 
 // Buttons Action Detection
 $(document).ready(function () {
@@ -46,12 +48,13 @@ var duration = 5000;
 function alert_message(message, type) {
     var wrapper = document.createElement('div');
     wrapper.innerHTML = ('<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
-    
-    if(alertPlaceholder) { 
+
+    if (alertPlaceholder) {
         alertPlaceholder.append(wrapper);
         setTimeout(function () { wrapper.parentNode.removeChild(wrapper);; }, duration);
     };
 }
+
 
 // Get Contents Manual Upload
 function getManualUploadContents() {
@@ -106,14 +109,23 @@ async function getClipboardContents() {
 
 // Get Content Drag and Drop - FilePond Plugin
 FilePond.registerPlugin(
-    FilePondPluginImageResize, 
-    FilePondPluginImagePreview
+    FilePondPluginImageResize,
+    FilePondPluginImageTransform,
+    FilePondPluginImagePreview,
+
+    //FilePondPluginGetFile,
 );
 
 const input = document.querySelector('input[id="filePondUpload"]');
 
 // Create a FilePond instance and post files to /upload
 FilePond.create(input, {
+
+    //labelIdle:
+    //'<div class="image-upload__file-upload-content">Add images</div>',
+
+
+
     server: {
         url: 'http://127.0.0.1:5000/',
         timeout: 7000,
@@ -129,23 +141,94 @@ FilePond.create(input, {
             ondata: null,
         },
         revert: {
-            url: '',
+            url: './',
             method: 'POST',
             //withCredentials: true,
             headers: {},
         },
     },
 
+
+
+
     // Call back when image is added
-    imageResizeTargetWidth:256,
-    onaddfile:(err, fileItem) =>{
-        console.log(err,fileItem.getMetadata('resize'));
+    onaddfile: (err, fileItem) => {
+        //console.log("On Add File Function called");
+        //console.log(err, fileItem.getMetadata('resize'));
     },
-    onpreparefile:(fileItem, output) =>{
+
+    // onpreparefile(file, output)
+    // File has been transformed by the transform plugin or another plugin 
+    // subscribing to the prepare_output filter. It receives the file item and the output data.
+    onpreparefile: (file, output) => {
+        console.log("On Prepare File Function called");
+        //console.log(file.getMetadata('resize'));
+
+        // Create new image
         const img = new Image();
         img.src = URL.createObjectURL(output);
-        console.log(img.src);
-        document.body.appendChild(img);
+        console.log(file.fileSize, output.size);
+
+        // Pass new image URL
+        downloadName = "res_" + file.filename;
+        downloadURL = img.src;
+        
+        console.log("Image Name: ", downloadName);
+        console.log("Image URL: ", downloadURL);
+
+        //console.log(file);
+    },
+
+    // Resize the file
+    //imageResizeUpscale: false,
+    allowImageResize: true,
+    imageResizeMode: 'contain',
+    imageResizeTargetWidth: 400,
+    imageResizeTargetHeight: 400,
+
+    /*
+    imageTransformVariants: {
+        thumb_medium_: (transforms) => {
+          transforms.resize.size.width = 384;
+          return transforms;
+        },
+        thumb_small_: (transforms) => {
+          transforms.resize.size.width = 128;
+          return transforms;
+        }
+    },
+    */
+
+
+
+
+
+    onremovefile: function (error, file) {
+        console.log("On Remove File Function called");
+        if (file.serverId) {
+            //let input = document.createElement('input');
+            //input.type = 'hidden';
+            //input.name = 'DeletedFilepondImages';
+            //input.value = file.serverId;
+            //uploadForm.appendChild(input);
+        }
+    },
+    onaddfileprogress(file, progress) {
+        console.log("On Add File Progress?", progress);
+        //buttonForm.classList.remove('filepondUpload');
+        //buttonForm.removeAttribute('disabled');
+    },
+
+    // Call when upload finishes
+    onprocessfile(error, file) {
+        //console.log("File Uploaded: ", file);
+        //buttonForm.classList.remove('filepondUpload');
+        //buttonForm.removeAttribute('disabled');
+    },
+    onprocessfiles() {
+        console.log('All functions finished');
+
+        enableDownloadBtn();
     },
 
 });
@@ -159,7 +242,7 @@ FilePond.create(input, {
 
 //import * as FilePond from 'filepond';
 
-// FilePond.registerPlugin(FilePondPluginImageResize, FilePondPluginImagePreview);
+
 /*
 const input = document.querySelector('input[type="file"]');
 
@@ -254,7 +337,7 @@ const handleImageUpload = event => {
     const files = event.target.files
     const formData = new FormData()
     formData.append('myFile', files[0])
-  
+
     fetch('/saveImage', {
       method: 'POST',
       body: formData
@@ -267,7 +350,7 @@ const handleImageUpload = event => {
       console.error(error)
     })
   }
-  
+
   document.querySelector('#fileUpload').addEventListener('change', event => {
     handleImageUpload(event)
   })
@@ -276,3 +359,30 @@ const handleImageUpload = event => {
 
 
 // Uppy
+
+
+
+
+
+
+// Download Button
+function enableDownloadBtn(fileUrl) {
+    var downloadBtn = document.getElementById("downloadFile");
+    downloadBtn.classList.remove("disabled");
+    //downloadBtn.href = downloadURL;
+
+    downloadBtn.innerHTML = "Download file: " + downloadName;
+    downloadBtn.href = downloadURL;
+    downloadBtn.setAttribute("download", downloadName);
+
+    downloadBtn.click();
+
+    //downloadBtn.addEventListener('click', function() {
+    //console.log("download clicked ___ ", downloadURL);
+    //window.location = downloadURL;
+    //}, false);
+}
+
+function download(fileUrl, fileName) {
+
+}
