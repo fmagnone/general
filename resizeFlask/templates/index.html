@@ -18,6 +18,12 @@
         <!-- Message box -->
         <div id="liveAlertPlaceholder"></div>
 
+        <!-- Options -->
+        <div class="container text-white m-0 p-0 mb-3">
+            <label for="resolution-percentage" class="form-label" id="resolution-percentage-label">Image compression: 60%</label> 
+            <input type="range" class="form-range" id="resolution-percentage" value="60">
+        </div>
+
         <!-- FilePond Upload -->
         <form method="POST" enctype="multipart/form-data">
             <input id="filePondUpload" type="file" class="filepond" name="filepond" multiple data-allow-reorder="true"
@@ -34,7 +40,7 @@
         </div>
 
         <!-- Download last file button -->
-        <a id="downloadFile" class="btn btn-download my-3 disabled" download>Download last uploaded image</a>
+        <div id="download-buttons-container"></div>
     </div>
 </section>
 <div class="spacer"></div>

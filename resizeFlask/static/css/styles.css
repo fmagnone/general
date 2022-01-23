@@ -144,7 +144,7 @@ body {
 
 /* Sprites and Images */
 .gr-01, .gr-04a, .gr-04b, .gr-04c {
-  background-image: url('assets/gr04.svg');
+  background-image: url('../assets/gr04.svg');
   background-repeat: no-repeat;
   height: 150px;
   width: 150px;
@@ -155,14 +155,14 @@ body {
   height: 130px;
 }
 .gr-02 {
-  background-image: url('assets/gr02.svg');
+  background-image: url('../assets/gr02.svg');
   background-repeat: no-repeat;
   width: 35px;
   height: 35px;
   background-size: contain;
 }
 .gr-03 {
-  background-image: url('assets/gr03.svg');
+  background-image: url('../assets/gr03.svg');
   background-repeat: no-repeat;
   width: 253px;
   width: 180px;

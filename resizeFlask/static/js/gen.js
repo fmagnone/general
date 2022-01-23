@@ -1,13 +1,14 @@
 /*!
  * Free Resize Image - Copyright 2022
- *
- *
+ * --
+ * General Scripts
  */
 
 // General variables
-let downloadName = "resized_unknown.jpg";
-let downloadURL = "";
+var downloadName = "resized_unknown.jpg";
+var downloadURL = "";
 var uploadedImages = {};
+var resolution = 60;
 
 // Buttons Action Detection
 $(document).ready(function () {
@@ -24,6 +25,13 @@ $(document).ready(function () {
         getClipboardContents();
     });
 });
+
+// Resolution Range change value
+document.getElementById('resolution-percentage').addEventListener('change', event => {
+    resolution = document.getElementById('resolution-percentage').value;
+    document.getElementById('resolution-percentage-label').innerHTML = "Image compression: " + resolution + "%";
+    //console.log("resolution change", resolution);
+})
 
 // Ctrl + V Detection
 $(document).ready(function () {
@@ -141,23 +149,24 @@ async function getClipboardContents() {
 
 // Get Content Drag and Drop - FilePond Plugin
 FilePond.registerPlugin(
+    //FilePondPluginGetFile,
+    //FilePondPluginImagePreview
     FilePondPluginImageResize,
     FilePondPluginImageTransform,
-    FilePondPluginImagePreview
-
-    //FilePondPluginGetFile,
 );
+
+// Append Pond to document
 const input = document.querySelector('input[id="filePondUpload"]');
 
 // Create a FilePond instance and post files to /upload
-FilePond.create(input, {
+const pond = FilePond.create(input, {
+    name: 'filepond',
+    maxFiles: 1,
     //labelIdle:
     //'<div class="image-upload__file-upload-content">Add images</div>',
-
     server: {
         url: "http://127.0.0.1:5000/",
         timeout: 7000,
-
         process: {
             url: "./",
             method: "POST",
@@ -187,7 +196,6 @@ FilePond.create(input, {
     // subscribing to the prepare_output filter. It receives the file item and the output data.
     onpreparefile: (file, output) => {
         console.log("On Prepare File Function called");
-        //console.log(file.getMetadata('resize'));
 
         // Create new image
         const img = new Image();
@@ -239,6 +247,9 @@ FilePond.create(input, {
             //input.value = file.serverId;
             //uploadForm.appendChild(input);
         }
+
+        // Remove button
+        removeDownloadBtn(file);
     },
     onaddfileprogress(file, progress) {
         console.log("On Add File Progress?", progress);
@@ -248,147 +259,18 @@ FilePond.create(input, {
 
     // Call when upload finishes
     onprocessfile(error, file) {
-        //console.log("File Uploaded: ", file);
+        console.log("File Uploaded: ", file);
         //buttonForm.classList.remove('filepondUpload');
         //buttonForm.removeAttribute('disabled');
     },
     onprocessfiles() {
         console.log("All functions finished");
 
-        enableDownloadBtn(); // Old function, to be removed ?
+        // enableDownloadBtn(); // Old function, to be removed
         addDownloadBtn();
     },
 });
 
-//console.log(pond);
-
-//import * as FilePond from 'filepond';
-
-/*
-const input = document.querySelector('input[type="file"]');
-
-const pond = FilePond.create(input, {
-    server: {
-        url: 'http://127.0.0.1:5000',
-        timeout: 7000,
-    },
-    process: (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
-        // fieldName is the name of the input field
-        // file is the actual file object to send
-        const formData = new FormData();
-        formData.append(fieldName, file, file.name);
-
-        const request = new XMLHttpRequest();
-        request.open('POST', 'url-to-api');
-
-        // Should call the progress method to update the progress to 100% before calling load
-        // Setting computable to false switches the loading indicator to infinite mode
-        request.upload.onprogress = (e) => {
-            console.log(e);
-            progress(e.lengthComputable, e.loaded, e.total);
-        };
-
-        // Should call the load method when done and pass the returned server file id
-        // this server file id is then used later on when reverting or restoring a file
-        // so your server knows which file to return without exposing that info to the client
-        request.onload = function () {
-            if (request.status >= 200 && request.status < 300) {
-                // the load method accepts either a string (id) or an object
-                load(request.responseText);
-            } else {
-                // Can call the error method if something is wrong, should exit after
-                error('oh no');
-            }
-        };
-
-        request.send(formData);
-
-        // Should expose an abort method so the request can be cancelled
-        return {
-            abort: () => {
-                // This function is entered if the user has tapped the cancel button
-                request.abort();
-
-                // Let FilePond know the request has been cancelled
-                abort();
-            },
-        };
-    },
-});
-*/
-
-/* url: 'http://127.0.0.1:5500/resizeFilePond/tmp/file.jpg',*/
-// const pond = FilePond.create(input);
-
-// Create a FilePond instance
-//const pond = FilePond.create(input);
-//console.log(input);
-
-/*
-FilePond.setOptions({
-    server:{
-        url: 'http://127.0.0.1:5500',
-        timeout: 7000,
-        process: {
-            url: './process',
-            method: 'POST',
-            withCredentials: false,
-            headers: {},
-            timeout: 7000,
-            onload: null,
-            onerror: null,
-            ondata: null,
-        },
-    },
-});
-*/
-
-////////
-// Get Content
-// Upload method without framework
-/*
-const handleImageUpload = event => {
-    const files = event.target.files
-    const formData = new FormData()
-    formData.append('myFile', files[0])
-
-    fetch('/saveImage', {
-      method: 'POST',
-      body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data.path)
-    })
-    .catch(error => {
-      console.error(error)
-    })
-  }
-
-  document.querySelector('#fileUpload').addEventListener('change', event => {
-    handleImageUpload(event)
-  })
-*/
-
-// Existing Download Button Enable/Disable
-function enableDownloadBtn(fileUrl) {
-    var downloadBtn = document.getElementById("downloadFile");
-    downloadBtn.classList.remove("disabled");
-    //downloadBtn.href = downloadURL;
-
-    downloadBtn.innerHTML = "Download file: " + downloadName;
-    downloadBtn.href = downloadURL;
-    downloadBtn.setAttribute("download", downloadName);
-
-    downloadBtn.click();
-
-    //downloadBtn.addEventListener('click', function() {
-    //console.log("download clicked ___ ", downloadURL);
-    //window.location = downloadURL;
-    //}, false);
-}
-
-function download(fileUrl, fileName) { }
 
 // Add Download Button
 function addDownloadBtn(fileUrl) {
@@ -396,14 +278,29 @@ function addDownloadBtn(fileUrl) {
     // 2. Add the button and the functions
     // 3. Click on the button to auto download
 
-    /*
-    var downloadBtn = document.getElementById("downloadFile");
-    downloadBtn.classList.remove("disabled");
-    //downloadBtn.href = downloadURL;
+    // Create a button in button container
+    for (const [name, url] of Object.entries(uploadedImages)) {
+        console.log("Item: ", name, url);
 
-    downloadBtn.innerHTML = "Download file: " + downloadName;
-    downloadBtn.href = downloadURL;
-    downloadBtn.setAttribute("download", downloadName);
+        if (!document.getElementById(url)){    
+            let downloadBtnContainer = document.getElementById("download-buttons-container");
 
-    downloadBtn.click();*/
+            let downloadBtn = document.createElement("a");
+            downloadBtn.innerHTML = "Download: " + name;
+            downloadBtn.href = url;
+            downloadBtn.classList.add('btn', 'btn-download', 'my-2');
+            downloadBtn.setAttribute("download", name);
+            downloadBtn.setAttribute("id", url);
+            downloadBtnContainer.appendChild(downloadBtn);
+
+            downloadBtn.click();
+        }
+    };
+
+    console.log(resolution);
+};
+
+// Remove Download Button
+function removeDownloadBtn(file) {
+    console.log(file);
 }
