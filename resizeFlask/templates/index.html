@@ -13,39 +13,16 @@
         <h5 class="mb-5">A simple and free image or photo resizer with rocket speed.</h5>
     </div>
 
-
     <!-- Page Content Block 1 - Upload -->
     <div class="container px-4 px-lg-5">
         <!-- Message box -->
         <div id="liveAlertPlaceholder"></div>
 
-
-        <!-- Flask method Upload -->
-        <!--
-        <h4>Flask method</h4>
-        <form action="http://127.0.0.1:5000/uploader" method="POST" enctype="multipart/form-data">
-            <input id="fileFlaskUpload" type="file" name="file"/>
-            <input type="submit" value="Submit via flask"/>
-        </form>
-        -->
-
         <!-- FilePond Upload -->
-        <!--
-        <h4>FilePond Method</h4>
-        -->
-
-        <a id="downloadFile" class="btn btn-download my-3 disabled" download>Download last image</a>
-
         <form method="POST" enctype="multipart/form-data">
             <input id="filePondUpload" type="file" class="filepond" name="filepond" multiple data-allow-reorder="true"
                 data-max-file-size="3MB" data-max-files="3">
         </form>
-
-        <!-- FilePond Upload -->
-        <!--
-        <h4>Uppy Method</h4>
-        <div id="drag-drop-area">drag</div>
-        -->
 
         <!-- Upload buttons -->
         <div class="container-fluid text-center">
@@ -55,17 +32,12 @@
             <button id="btnUploadFromPaste" class="btn btn-upload_from m-2 disabled" type="submit">Paste image (Crtl
                 + V)</button>
         </div>
+
+        <!-- Download last file button -->
+        <a id="downloadFile" class="btn btn-download my-3 disabled" download>Download last uploaded image</a>
     </div>
 </section>
-<!-- Page Content Ads Block -->
-<section>
-    <!-- Horizontal bar for ads -->
-    <div class="card text-white my-5 align-middle text-center transp-backgr">
-        <div class="card-body">
-            <img class="img-fluid mb-4 mb-lg-0" src="https://dummyimage.com/970x90/cccccc/666666" alt="..." />
-        </div>
-    </div>
-</section>
+<div class="spacer"></div>
 <!-- Page Content Block 2 -->
 <section>
     <div class="container px-4 px-lg-5">
