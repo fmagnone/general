@@ -5,15 +5,20 @@ const imagesDiv = document.querySelector("#images");
 const fileInput = document.querySelector("#upload");
 var imageToResize = document.querySelector("#imgToResize");
 var resizedImage = document.querySelector("#resizedImage");
+var deleteBtn = document.querySelector("#deleteBtn")
 var slider = document.getElementById("myRange");
-
-imagesDiv.style.visibility = "hidden";
-imageToResize.style.display = "none";
 
 // Global Variables
 var resizingFactor = 0.5;
 
-// Listeners
+// Listeners and global functions
+originalState = function () {
+  imagesDiv.style.visibility = "hidden";
+  imageToResize.style.display = "none";
+  deleteBtn.disabled = true;
+  fileInput.value = "";
+};
+
 fileInput.addEventListener("change", async (e) => {
   const [file] = fileInput.files;
 
@@ -21,6 +26,7 @@ fileInput.addEventListener("change", async (e) => {
 
   // resizing the image and displaying it
   imagesDiv.style.visibility = "visible";
+  deleteBtn.disabled = false;
   resizeImage();
 });
 
@@ -29,12 +35,13 @@ function fileToDataUri(field) {
     const reader = new FileReader();
     reader.addEventListener("load", () => {
       resolve(reader.result);
-      resizeImage();
     });
     reader.readAsDataURL(field);
   });
 }
-
+deleteBtn.onclick = function () {
+  originalState();
+};
 slider.oninput = function () {
   resizingFactor = this.value / 100;
   resizeImage();
@@ -65,3 +72,6 @@ function resizeImage() {
   console.log(canvas.toDataURL())
   console.log(resizedImage)
 }
+
+
+originalState();
