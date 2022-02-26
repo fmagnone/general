@@ -8,6 +8,7 @@ var resizedImage = document.querySelector("#resizedImage");
 var slider = document.getElementById("myRange");
 
 imagesDiv.style.visibility = "hidden";
+imageToResize.style.display = "none";
 
 // Global Variables
 var resizingFactor = 0.5;
@@ -49,8 +50,6 @@ function resizeImage() {
   var canvasWidth = originalWidth * resizingFactor;
   var canvasHeight = originalHeight * resizingFactor;
 
-  console.log("W__", originalWidth, resizingFactor);
-
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
 
@@ -59,8 +58,6 @@ function resizeImage() {
     originalWidth * resizingFactor,
     originalHeight * resizingFactor
   );
-
-  console.log("W__", canvasWidth);
 
   resizedImage.src = canvas.toDataURL();
 
