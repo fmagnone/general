@@ -12,19 +12,19 @@ imagesDiv.style.visibility = "hidden";
 // Global Variables
 var resizingFactor = 0.5;
 var imageToResize;
-
+var resizedImage;
 
 // Listeners
 fileInput.addEventListener("change", async (e) => {
   const [file] = fileInput.files;
 
   // displaying the uploaded image
-  const imageToResize = document.querySelector("#imgToResize");
+  imageToResize = document.querySelector("#imgToResize");
   imageToResize.src = await fileToDataUri(file);
 
   // resizing the image and displaying it
-  const resizedImage = document.querySelector("#resizedImage");
-  resizedImage.src = resizeImage(imageToResize, this);
+  resizedImage = document.querySelector("#resizedImage");
+  resizeImage();
 
   // making the div containing the image visible
   imagesDiv.style.visibility = "visible";
@@ -42,10 +42,11 @@ function fileToDataUri(field) {
 
 slider.oninput = function() {
   resizingFactor = this.value/100;
+  resizeImage();
 };
 
 updateBtn.onclick = function(){
-  console.log("click")
+  resizeImage();
 };
 
 //var output = document.getElementById("demo");
@@ -57,9 +58,8 @@ updateBtn.onclick = function(){
 //}
 
 // Resizer function
-function resizeImage(imgToResize) {
-  console.log(imgToResize);
-  console.log(resizingFactor);
+function resizeImage() {
+  //console.log(resizingFactor, imgToResize);
 
   var canvas = document.createElement("canvas");
   var context = canvas.getContext("2d");
@@ -73,7 +73,6 @@ function resizeImage(imgToResize) {
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
 
-
   context.drawImage(
     imgToResize,
     0,
@@ -82,5 +81,5 @@ function resizeImage(imgToResize) {
     originalHeight * resizingFactor
   );
 
-  return canvas.toDataURL();
+  resizedImage.src = canvas.toDataURL();
 }

@@ -1,3 +1,3 @@
-# Learning
+# Learning personal folder
 
-Testing different systems to learn coding.
+This is for personal use only. Trying different systems to learn coding.
