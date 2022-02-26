@@ -29,6 +29,7 @@ function fileToDataUri(field) {
     const reader = new FileReader();
     reader.addEventListener("load", () => {
       resolve(reader.result);
+      resizeImage();
     });
     reader.readAsDataURL(field);
   });
