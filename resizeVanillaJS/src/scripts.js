@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Call await fileToDataUri()
     imageToResize.src = await fileToDataUri(file);
-    //console.log(imageToResize);
+    console.log("Images is resized");
 
     // Resizing the image
     resizeImage();
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     var canvasWidth = originalWidth * resizingFactor;
     var canvasHeight = originalHeight * resizingFactor;
-    console.log(originalWidth, resizingFactor);
+    //console.log(originalWidth, resizingFactor);
 
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
@@ -80,13 +80,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     resizedImage.src = canvas.toDataURL();
 
-    console.log(canvas.toDataURL())
-    console.log(resizedImage)
+    //console.log(canvas.toDataURL())
+    //console.log(resizedImage)
   }
 
 
   originalState();
 
-
+  
   console.log('DOM fully loaded and parsed');
 });
