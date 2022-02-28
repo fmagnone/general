@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		resizeImage();
 	};
 	download.onclick = function () {
-		filename = "file.jpg";
+		filename = "freeimageresizer_com_" + resizingWidth + "x" + resizingHeight + ".jpg";
 
 		var element = document.createElement('a');
 		element.setAttribute('href', newURL);
