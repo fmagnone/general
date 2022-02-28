@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	var inputSlider = document.getElementById("range");
 	var inputWidth = document.getElementById("width");
 	var inputHeight = document.getElementById("height");
+	var download = document.getElementById("download");
 
 	// Variables
 	var resizingFactor = 0.5;
@@ -18,17 +19,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	var resizingHeight = 200;
 	inputWidth.value = resizingWidth;
 	inputHeight.value = resizingHeight;
-	imageUrl = ""
+	originalURL = "";
+	newURL = "";
 
 	// Listeners and global functions
 	displayState = function () {
 		imagesDiv.style.visibility = "visible";
-		imageText.innerHTML = imageUrl;
+		imageText.innerHTML = originalURL;
+		download.disabled = false;
 	}
 	originalState = function () {
 		imagesDiv.style.visibility = "hidden";
 		imageToResize.style.display = "none";
 		imageText.innerHTML = "No image";
+		download.disabled = true;
 	};
 	originalState();
 
@@ -60,6 +64,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		print("New fixed w x h: " + resizingWidth + " x " + resizingHeight);
 		resizeImage();
 	};
+	download.onclick = function () {
+		filename = "file.jpg";
+		
+		var element = document.createElement('a');
+		element.setAttribute('href',  newURL);
+		element.setAttribute('download', filename);
+		document.body.appendChild(element);
+		element.click();
+
+		console.log("Download.")
+	}
 
 
 	// Resizer function
@@ -80,11 +95,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			// Draw new image
 			context.drawImage(image, 0, 0, w, h);
 			resizedImage.src = canvas.toDataURL('image/jpeg', 0.9);
+			newURL = resizedImage.src;	
 			displayState();
 		};
 
 		// Assign image
-		image.src = imageUrl;
+		image.src = originalURL;
 	};
 
 
@@ -111,7 +127,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			// Assign image to variable
 			const image = document.querySelector('img');
 			image.src = URL.createObjectURL(fileItem.file);
-			imageUrl = image.src;
+			originalURL = image.src;
 
 			// Update show status
 			displayState();
