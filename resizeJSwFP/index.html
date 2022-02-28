@@ -2,42 +2,71 @@
 <html>
 
 <head>
-  <style>
-    .slidecontainer {
-      width: 300px;
-    }
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<!-- FilePond-->
+	<!-- Copyright (c) 2019 PQINA | Rik Schennink <rik@pqina.nl> -->
+	<link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+	<link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+		rel="stylesheet" />
 
-    .slider {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 100%;
-      height: 5px;
-      background: #d3d3d3;
-    }
+	<!-- Title -->
+	<title>Image Resizer JS and FP</title>
 
-  </style>
+	<style>
+		.slidecontainer {
+			width: 300px;
+		}
+
+		.slider {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 100%;
+			height: 5px;
+			background: #d3d3d3;
+		}
+
+	</style>
 </head>
 
 <body>
-  <h1>Image Resizer</h1>
-  <p>
-    Upload an image and it will be shown both original and resized
-  </p>
-  <div id="imageText">No image</div>
-  </br>
-  
-  <div class="slidecontainer">
-    <input type="range" min="1" max="100" value="50" class="slider" id="range">
-  </div>
-  <input type="number" min="0" max="2500" class="" id="width">
-  <input type="number" min="0" max="2500" class="" id="height">
+	<h1>Image Resizer</h1>
+	<p>
+		Upload an image and it will be shown both original and resized
+	</p>
 
-  <div id="images">
-    <h2>Resized image</h2>
-    <img id="imgToResize" />
-    <img id="resizedImage" />
-  </div>
-  <script src="src/scripts.js"></script>
+	<!-- FilePond Upload -->
+	<form method="POST">
+		<input id="fileUpload" type="file" class="filepond" name="filepond" multiple data-allow-reorder="true"
+			data-max-file-size="3MB" data-max-files="3">
+	</form>
+	</br>
+
+	<div id="imageText">No image</div>
+	</br>
+
+	<div class="slidecontainer">
+		<input type="range" min="1" max="100" value="50" class="slider" id="range">
+	</div>
+	<input type="number" min="0" max="2500" class="" id="width">
+	<input type="number" min="0" max="2500" class="" id="height">
+
+	<div id="images">
+		<h2>Resized image</h2>
+		<img id="imgToResize" />
+		<img id="resizedImage" />
+	</div>
+
+	<script src="src/scripts.js"></script>
+
+
+	<!-- Filepond -->
+	<!-- Copyright (c) 2019 PQINA | Rik Schennink <rik@pqina.nl> -->
+	<script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+	<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+	<script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+
 </body>
 
 </html>
