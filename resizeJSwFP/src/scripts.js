@@ -23,18 +23,22 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	newURL = "";
 
 	// Listeners and global functions
-	displayState = function () {
-		imagesDiv.style.visibility = "visible";
-		imageText.innerHTML = originalURL;
-		download.disabled = false;
+	displayState = function (show) {
+		if (show) {
+			// Show image
+			imagesDiv.style.visibility = "visible";
+			imageText.innerHTML = originalURL;
+			download.disabled = false;
+		}
+		else {
+			// Go to original state
+			imagesDiv.style.visibility = "hidden";
+			imageToResize.style.display = "none";
+			imageText.innerHTML = "No image";
+			download.disabled = true;
+		}
 	}
-	originalState = function () {
-		imagesDiv.style.visibility = "hidden";
-		imageToResize.style.display = "none";
-		imageText.innerHTML = "No image";
-		download.disabled = true;
-	};
-	originalState();
+	displayState(false);
 
 
 	print = function (message) {
@@ -66,9 +70,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	};
 	download.onclick = function () {
 		filename = "file.jpg";
-		
+
 		var element = document.createElement('a');
-		element.setAttribute('href',  newURL);
+		element.setAttribute('href', newURL);
 		element.setAttribute('download', filename);
 		document.body.appendChild(element);
 		element.click();
@@ -95,8 +99,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			// Draw new image
 			context.drawImage(image, 0, 0, w, h);
 			resizedImage.src = canvas.toDataURL('image/jpeg', 0.9);
-			newURL = resizedImage.src;	
-			displayState();
+			newURL = resizedImage.src;
+			displayState(true);
 		};
 
 		// Assign image
@@ -122,7 +126,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		// FUNCTIONS ------------
 		// Call back when image is added
 		onaddfile: (err, fileItem) => {
-			console.log("On Add File Function called");
+			console.log("FP Add File Function called");
 
 			// Assign image to variable
 			const image = document.querySelector('img');
@@ -130,10 +134,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			originalURL = image.src;
 
 			// Update show status
-			displayState();
+			displayState(true);
 
 			// Resize image
 			resizeImage();
+		},
+		// File has been removed
+		onremovefile: function (error, file) {
+			console.log("FP Remove File Function called");
+
+			// Update show status
+			displayState(false)
 		},
 	});
 
