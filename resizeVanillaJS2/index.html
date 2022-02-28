@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    .slidecontainer {
+      width: 300px;
+    }
+
+    .slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 5px;
+      background: #d3d3d3;
+    }
+
+  </style>
+</head>
+
+<body>
+  <h1>Image Resizer</h1>
+  <p>
+    Upload an image and it will be shown both original and resized
+  </p>
+  <button id="deleteBtn">Delete Image</button>
+  <input id="upload" type="file" accept="image/*" required />
+  <div class="slidecontainer">
+    <input type="range" min="1" max="100" value="50" class="slider" id="range">
+  </div>
+  <input type="number" min="0" max="2500" class="" id="width">
+  <input type="number" min="0" max="2500" class="" id="height">
+
+  <div id="images">
+    <h2>Resized image</h2>
+    <img id="imgToResize" />
+    <img id="resizedImage" />
+  </div>
+  <script src="src/scripts.js"></script>
+</body>
+
+</html>
