@@ -5,7 +5,7 @@
 function downScaleImage(img, scale) {
     var imgCV = document.createElement('canvas');
     imgCV.width = img.width;
-    imgCV.height = img.height;
+    imgCV.height = img.height;    
     var imgCtx = imgCV.getContext('2d');
     imgCtx.drawImage(img, 0, 0);
     return downScaleCanvas(imgCV, scale);

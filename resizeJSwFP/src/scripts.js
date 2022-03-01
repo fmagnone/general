@@ -3,11 +3,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 	// Elements
 	const imagesDiv = document.querySelector("#images");
-	const imageResized = document.querySelector("#imageResized");
-	const resizedImage = document.querySelector("#resizedImage");
+	//const imageResized = document.querySelector("#imageResized");
+	//const resizedImage = document.querySelector("#resizedImage");
 	const imageText = document.querySelector("#imageText")
-	const downloadContainer = document.getElementById("downloadContainer");
+	const imageResizedContainer = document.getElementById("imageResizedContainer");
 	const imagePrevContainer = document.getElementById("imagePrevContainer");
+	const downloadContainer = document.getElementById("downloadContainer");
 	const inputSlider = document.getElementById("range");
 	const inputWidth = document.getElementById("width");
 	const inputHeight = document.getElementById("height");
@@ -26,11 +27,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 	// Image Class Constructor
 	class imageData {
-		constructor(name, url, size_old, id_img, id_btn, id_file) {
+		constructor(name, url, size_old, id_img_old, id_img_new, id_btn, id_file) {
 			this.valid = true;
 			this.name = name;
 			this.url = url;
-			this.id_img = id_img;
+			this.id_img_old = id_img_old;
+			this.id_img_new = id_img_new;
 			this.id_btn = id_btn;
 			this.id_file = id_file;
 			this.size_old = size_old;
@@ -48,7 +50,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		new_image.name = name;
 		new_image.url = url;
 		new_image.id_file = id_file;
-		new_image.id_img = "img_" + id;
+		new_image.id_img_old = "img_prev_" + id;
+		new_image.id_img_new = "img_res_" + id;
 		new_image.id_btn = "download_" + id;
 		new_image.size_old = size;
 
@@ -62,9 +65,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		for (var id in imageList) {
 			if (imageList[id].id_file == id_file) {
 				imageList[id].valid = false;
-				document.getElementById(imageList[id].id_img).remove();
+				document.getElementById(imageList[id].id_img_old).remove();
+				document.getElementById(imageList[id].id_img_new).remove();
 				document.getElementById(imageList[id].id_btn).remove();
 				//console.log("Image removed from list", id, id_file);
+				//resizeLastImage();
 				return;
 			}
 		}
@@ -73,15 +78,38 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 	// Listeners and global functions
 	addDownloadButton = function (id) {
-		var new_button = document.createElement("button");
+		// Add button variable
+		let new_button = document.createElement("button");
 		new_button.id = imageList[id].id_btn;
 		new_button.innerHTML = "Download image " + imageList[id].id_img + " - " + imageList[id].name;
+		
+		// Add listener
+		new_button.onclick = function () {
+			//filename = "freeimageresizer_" + resizingWidth + "x" + resizingHeight + "_" + imageList[id].name;
+			filename = "freeimageresizer_" + imageList[id].name;
+			let url = imageList[id].url;
+			var element = document.createElement('a');
+			element.setAttribute('href', url);
+			element.setAttribute('download', filename);
+			document.body.appendChild(element);
+			element.click();
+			//console.log("Downloaded: ", new_button.id);
+		}
+
+		// Append element to DOM
 		downloadContainer.appendChild(new_button);
 	}
-	addImageToDOM = function (fileItem, id) {
+	addResizedImageToDOM = function (fileItem, id) {
 		// Add image to DOM
 		var new_img = document.createElement("img");
-		new_img.id = "img_" + id;
+		new_img.id = "img_res_" + id;
+		new_img.src = URL.createObjectURL(fileItem.file);
+		imageResizedContainer.appendChild(new_img);
+	}
+	addPrevImageToDOM = function (fileItem, id) {
+		// Add image to DOM
+		var new_img = document.createElement("img");
+		new_img.id = "img_prev_" + id;
 		new_img.src = URL.createObjectURL(fileItem.file);
 		imagePrevContainer.appendChild(new_img);
 	}
@@ -100,8 +128,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		}
 	}
 	displayState(false);
-
-
 	inputSlider.oninput = function () {
 		resizingFactor = this.value / 100;
 		updateValuePercentage();
@@ -115,14 +141,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		updateValueFixed();
 	};
 	updateValuePercentage = function () {
-		resizingWidth = parseInt(originalWidth * resizingFactor);
-		resizingHeight = parseInt(originalHeight * resizingFactor);
-		console.log("Percentage  -  Original " + originalWidth + " x " + originalHeight + "  -  Original " + resizingWidth + " x " + resizingHeight);
+		// Print values
+		//resizingWidth = parseInt(originalWidth * resizingFactor);
+		//resizingHeight = parseInt(originalHeight * resizingFactor);
+		//console.log("Percentage  -  Original " + originalWidth + " x " + originalHeight + "  -  Original " + resizingWidth + " x " + resizingHeight);
 
-		// Resize last image added
-		//let last = imageList.length - 1;
-		//console.log(last);
-		//if (last => 0) { resizeImage(imageList[last]); }
+		// Resize last image
+		updateImagesResize();
 	};
 	updateValueFixed = function () {
 		resizingWidth = inputWidth.value;
@@ -130,37 +155,37 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		console.log("New fixed w x h: " + resizingWidth + " x " + resizingHeight);
 		//resizeImage();
 	};
-	/*
-	// TODO 
-	download.onclick = function () {
-		filename = "freeimageresizer_com_" + resizingWidth + "x" + resizingHeight + ".jpg";
-	
-		var element = document.createElement('a');
-		element.setAttribute('href', newURL);
-		element.setAttribute('download', filename);
-		document.body.appendChild(element);
-		element.click();
-	
-		console.log("Downloaded")
-	}*/
+	updateImagesResize = function () {
+		for (let i in imageList) {
+			if (imageList[i].valid == true) {
+				let id = parseInt(i);
+				resizeImage(id);
+			}
+		}
+	}
 
 
 	// Call resizer function
-	function resizeImage(imageData) {
-		console.log("Resize call--", imageData);
+	function resizeImage(id) {
+		console.log("Resize call--", id, resizingFactor);
 
 		// Assign img to variable
-		const imageToResize = document.getElementById(imageData.id_img);
-		//image.src = URL.createObjectURL(fileItem.file); // old
-		//originalURL = image.src; // old
-		//imageToResize = imageData.url;
-		//console.log(imageToResize, imageData.url);
+		let img_old = document.getElementById(imageList[id].id_img_old);
+		let img_new = document.getElementById(imageList[id].id_img_new);
 
 		// Call the resizer
-		canvas = downScaleImage(imageToResize, resizingFactor);
-		imageResized.src = canvas.toDataURL('image/jpeg');
-	};
+		let canvas = downScaleImage(img_old, resizingFactor);
 
+		// Assign the image
+		img_new.src = canvas.toDataURL('image/jpeg');
+		imageList[id].url = img_new.src;
+		//addResizedImageToDOM(canvas.toDataURL('image/jpeg'), id);
+
+		// Ensure new resizer call when is loaded
+		img_old.onload = function () {
+			updateImagesResize();
+		};
+	};
 
 	// --------------------------------------------------- //
 	// FilePond Coding
@@ -185,11 +210,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			// Assign image to list
 			id = saveImageData(fileItem.file.name, URL.createObjectURL(fileItem.file), fileItem.fileSize, fileItem.id);
 
-			// Add image to DOM
-			addImageToDOM(fileItem, id);
+			// Add previous images to DOM
+			addPrevImageToDOM(fileItem, id);
+			addResizedImageToDOM(fileItem, id);
 
 			// Resize image and add to the list
-			resizeImage(imageList[id]);
+			resizeImage(id);
 
 			// Add download button
 			addDownloadButton(id);
