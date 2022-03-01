@@ -3,9 +3,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 	// Elements
 	const imagesDiv = document.querySelector("#images");
-	//const imageResized = document.querySelector("#imageResized");
-	//const resizedImage = document.querySelector("#resizedImage");
-	const imageText = document.querySelector("#imageText")
 	const imageResizedContainer = document.getElementById("imageResizedContainer");
 	const imagePrevContainer = document.getElementById("imagePrevContainer");
 	const downloadContainer = document.getElementById("downloadContainer");
@@ -15,15 +12,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 	// Variables
 	var imageList = [];
+	var inputType = "s";
 	var resizingFactor = 0.5;
-	var originalWidth = 0;
-	var originalHeight = 0;
-	var resizingWidth = 400;
-	var resizingHeight = 200;
-	inputWidth.value = resizingWidth;
-	inputHeight.value = resizingHeight;
-	originalURL = "";
-	newURL = "";
+	var resizingWidth = 0;
+	var resizingHeight = 0;
 
 	// Image Class Constructor
 	class imageData {
@@ -68,8 +60,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 				document.getElementById(imageList[id].id_img_old).remove();
 				document.getElementById(imageList[id].id_img_new).remove();
 				document.getElementById(imageList[id].id_btn).remove();
-				//console.log("Image removed from list", id, id_file);
-				//resizeLastImage();
 				return;
 			}
 		}
@@ -82,7 +72,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		let new_button = document.createElement("button");
 		new_button.id = imageList[id].id_btn;
 		new_button.innerHTML = "Download image " + imageList[id].id_img + " - " + imageList[id].name;
-		
+
 		// Add listener
 		new_button.onclick = function () {
 			//filename = "freeimageresizer_" + resizingWidth + "x" + resizingHeight + "_" + imageList[id].name;
@@ -113,47 +103,94 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		new_img.src = URL.createObjectURL(fileItem.file);
 		imagePrevContainer.appendChild(new_img);
 	}
+	clearValues = function () {
+		// Clear fixed width and height input and slider input
+		resizingFactor = 0.5;
+		resizingWidth = 0;
+		resizingHeight = 0;
+		inputSlider.value = 50;
+		inputWidth.value = "";
+		inputHeight.value = "";
+		inputType = "s";
+	}
 	displayState = function (show) {
 		if (show) {
 			// Show image
 			imagesDiv.style.visibility = "visible";
 			downloadContainer.style.visibility = "visible";
-			imageText.innerHTML = originalURL;
 		}
 		else {
 			// Go to original state
 			imagesDiv.style.visibility = "hidden";
 			downloadContainer.style.visibility = "hidden";
-			imageText.innerHTML = "-";
+			clearValues();
 		}
 	}
 	displayState(false);
+	
 	inputSlider.oninput = function () {
-		resizingFactor = this.value / 100;
-		updateValuePercentage();
-	};
-	inputWidth.onchange = function () {
-		resizingWidth = this.value;
-		updateValueFixed();
-	};
-	inputHeight.onchange = function () {
-		resizingHeight = this.value;
-		updateValueFixed();
-	};
-	updateValuePercentage = function () {
-		// Print values
-		//resizingWidth = parseInt(originalWidth * resizingFactor);
-		//resizingHeight = parseInt(originalHeight * resizingFactor);
-		//console.log("Percentage  -  Original " + originalWidth + " x " + originalHeight + "  -  Original " + resizingWidth + " x " + resizingHeight);
+		// Update values
+		let i = this.value;
+		clearValues();
+		this.value = i;
+		resizingFactor = i / 100;
+		inputType = "s";
 
-		// Resize last image
+		// Resize images update
 		updateImagesResize();
 	};
-	updateValueFixed = function () {
-		resizingWidth = inputWidth.value;
-		resizingHeight = inputHeight.value;
-		console.log("New fixed w x h: " + resizingWidth + " x " + resizingHeight);
-		//resizeImage();
+	inputWidth.onchange = function () {
+		// Update values
+		let i = this.value;
+		clearValues();
+		this.value = i;
+		resizingWidth = parseInt(i);
+		inputType = "w";
+
+		// Resize images update
+		updateImagesResize();
+	};
+	inputHeight.onchange = function () {
+		// Update values
+		let i = this.value;
+		clearValues();
+		this.value = i;
+		resizingHeight = parseInt(i);
+		inputType = "h";
+
+		// Resize images update
+		updateImagesResize();
+	};
+
+
+	// --------------------------------------------------- //
+	// Resizer caller
+	resizeImage = function (id) {
+		//console.log("Resize call--", id, resizingFactor);
+		// Assign img to variable
+		let img_old = document.getElementById(imageList[id].id_img_old);
+		let img_new = document.getElementById(imageList[id].id_img_new);
+		let canvas;
+
+		// Select resizing method and Call the resizer
+		if (inputType == "s") {
+			canvas = downScaleImage(img_old, resizingFactor);
+		}
+		else if (inputType == "w") {
+			canvas = downScaleImage(img_old, undefined, resizingWidth);
+		}
+		else if (inputType == "h") {
+			let scale = resizingHeight / img_old.height;
+			resizingWidth = Math.ceil(img_old.width * scale);
+			canvas = downScaleImage(img_old, undefined, resizingWidth);
+		}
+
+		// Assign the image
+		img_new.src = canvas.toDataURL('image/jpeg');
+		imageList[id].url = img_new.src;
+
+		// Ensure new resizer call when is loaded
+		img_old.onload = function () { updateImagesResize(); };
 	};
 	updateImagesResize = function () {
 		for (let i in imageList) {
@@ -165,30 +202,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	}
 
 
-	// Call resizer function
-	function resizeImage(id) {
-		console.log("Resize call--", id, resizingFactor);
-
-		// Assign img to variable
-		let img_old = document.getElementById(imageList[id].id_img_old);
-		let img_new = document.getElementById(imageList[id].id_img_new);
-
-		// Call the resizer
-		let canvas = downScaleImage(img_old, resizingFactor);
-
-		// Assign the image
-		img_new.src = canvas.toDataURL('image/jpeg');
-		imageList[id].url = img_new.src;
-		//addResizedImageToDOM(canvas.toDataURL('image/jpeg'), id);
-
-		// Ensure new resizer call when is loaded
-		img_old.onload = function () {
-			updateImagesResize();
-		};
-	};
-
 	// --------------------------------------------------- //
-	// FilePond Coding
+	// FilePond caller
 
 	// Register the plugin
 	FilePond.registerPlugin(FilePondPluginImageResize, FilePondPluginImagePreview);

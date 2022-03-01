@@ -1,25 +1,44 @@
 // Multiple downsample
 
-// scales the image by (float) scale < 1
-// returns a canvas containing the scaled image.
-function downScaleImage(img, scale) {
+// scales the image by (float) scale < 1 and returns a canvas containing the scaled image.
+function downScaleImage(img, scale, width) {
     var imgCV = document.createElement('canvas');
     imgCV.width = img.width;
-    imgCV.height = img.height;    
+    imgCV.height = img.height;
     var imgCtx = imgCV.getContext('2d');
     imgCtx.drawImage(img, 0, 0);
-    return downScaleCanvas(imgCV, scale);
+    return downScaleCanvas(imgCV, scale, width);
 }
+function downScaleCanvas(cv, scale, width) {
+    // If scale is fixed, force to fixed width
+    if (width) {
+        var sqScale = scale * scale; // square scale = area of source pixel within target
+        var sw = cv.width - 1; // source image width
+        var sh = cv.height - 1; // source image height
 
-// scales the canvas by (float) scale < 1
-// returns a new canvas containing the scaled image.
-function downScaleCanvas(cv, scale) {
-    if (!(scale < 1) || !(scale > 0)) throw ('scale must be a positive number <1 ');
-    var sqScale = scale * scale; // square scale = area of source pixel within target
-    var sw = cv.width - 1; // source image width
-    var sh = cv.height - 1; // source image height
-    var tw = Math.floor(sw * scale); // target image width
-    var th = Math.floor(sh * scale); // target image height
+        var tw = Math.floor(sw * scale); // target image width
+        var th = Math.floor(sh * scale); // target image height
+
+        tw = width; // custom FM
+        scale = tw / sw // custom FM
+        sqScale = scale * scale; // custom FM
+        rt = sh / sw; // custom FM
+        th = tw * rt; // custom FM
+    }
+    // If scale is not fixed
+    else {
+        if (!(scale < 1) || !(scale > 0)) throw ('scale must be a positive number <1 '); // REVIEW
+
+        var sqScale = scale * scale; // square scale = area of source pixel within target
+        var sw = cv.width - 1; // source image width
+        var sh = cv.height - 1; // source image height
+
+        var tw = Math.floor(sw * scale); // target image width
+        var th = Math.floor(sh * scale); // target image height
+    }
+
+
+
     var sx = 0, sy = 0, sIndex = 0; // source x,y, index within source array
     var tx = 0, ty = 0, yIndex = 0, tIndex = 0; // target x,y, x,y index within target array
     var tX = 0, tY = 0; // rounded tx, ty
