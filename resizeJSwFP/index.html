@@ -15,7 +15,7 @@
 	<title>Image Resizer JS and FP</title>
 
 	<style>
-		.slidecontainer {
+		#sliderContainer {
 			width: 300px;
 		}
 
@@ -27,43 +27,59 @@
 			background: #d3d3d3;
 		}
 
+		.column {
+			float: left;
+			width: 50%;
+		}
+
+		.row:after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+
 	</style>
 </head>
 
 <body>
 	<h1>Image Resizer</h1>
-	<p>
-		Upload an image and it will be shown both original and resized
-	</p>
+	<p>Upload an image and it will be shown both original and resized</p>
 
-	<!-- FilePond Upload -->
-	<form method="POST">
-		<input id="fileUpload" type="file" class="filepond" name="filepond" multiple data-allow-reorder="true"
-			data-max-file-size="3MB" data-max-files="3">
-	</form>
-	</br>
-
-	<div id="imageText">No image</div>
-	</br>
-
-	<div class="slidecontainer">
-		<input type="range" min="1" max="100" value="50" class="slider" id="range">
+	<div class="row">
+		<div class="column">
+			<!-- FilePond Upload -->
+			<form method="POST">
+				<input id="fileUpload" type="file" class="filepond" name="filepond" multiple data-allow-reorder="true"
+					data-max-file-size="3MB" data-max-files="3">
+			</form>
+			</br>
+		</div>
+		<div class="column">
+			<div id="sliderContainer">
+				Scale to a percentage: <input type="range" min="1" max="100" value="50" class="slider" id="range">
+			</div>
+			</br>
+			<div class="sizeContainer">
+				Scale to a fixed size:
+				<input type="number" min="0" max="2500" class="" id="width">
+				<input type="number" min="0" max="2500" class="" id="height">
+			</div>
+			</br>
+			<div id="imageText">No image</div>
+			<div id="downloadContainer"></div>
+			</br>
+			<div id="images">
+				<h2>Resized image</h2>
+				<img id="imageResized" />
+				<h2>Prev image</h2>
+				<div id="imagePrevContainer"></div>
+			</div>
+		</div>
 	</div>
-	<div>
-		<input type="number" min="0" max="2500" class="" id="width">
-		<input type="number" min="0" max="2500" class="" id="height">
-	</div>
-	</br>
 
-	<button id="download" disabled>Download image</button>
-	<div id="images">
-		<h2>Resized image</h2>
-		<img id="imgToResize" />
-		<img id="resizedImage" />
-	</div>
-
+	<!-- Custom -->
+	<script src="src/downsample.js"></script>
 	<script src="src/scripts.js"></script>
-
 
 	<!-- Filepond -->
 	<!-- Copyright (c) 2019 PQINA | Rik Schennink <rik@pqina.nl> -->
