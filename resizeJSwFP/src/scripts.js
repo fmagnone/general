@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	const inputSlider = document.getElementById("range");
 	const inputWidth = document.getElementById("width");
 	const inputHeight = document.getElementById("height");
+	const updateButton = document.getElementById("updateButton");
+	const updateCheckbox = document.getElementById("updateCheckbox");
+
 
 	// Variables
 	var imageList = [];
@@ -16,21 +19,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	var resizingFactor = 0.5;
 	var resizingWidth = 0;
 	var resizingHeight = 0;
+	var autoUpdate = false;
 
 	// Image Class Constructor
 	class imageData {
-		constructor(name, url, size_old, id_img_old, id_img_new, id_btn, id_file) {
+		constructor(name, url, size_old, id_img_old, ext_old, id_img_new, id_btn, id_file) {
 			this.valid = true;
 			this.name = name;
 			this.url = url;
 			this.id_img_old = id_img_old;
 			this.id_img_new = id_img_new;
+			this.ext_old = ext_old;
 			this.id_btn = id_btn;
 			this.id_file = id_file;
 			this.size_old = size_old;
 		}
 	}
-	saveImageData = function (name, url, size, id_file) {
+	saveImageData = function (name, url, size, ext, id_file) {
 		// Save image data into the list, 
 		// saveImageData("Name", "Url");
 
@@ -42,6 +47,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		new_image.name = name;
 		new_image.url = url;
 		new_image.id_file = id_file;
+		new_image.ext_old = ext;
 		new_image.id_img_old = "img_prev_" + id;
 		new_image.id_img_new = "img_res_" + id;
 		new_image.id_btn = "download_" + id;
@@ -127,7 +133,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		}
 	}
 	displayState(false);
-	
+	updateCheckbox.onclick = function () {
+		if (this.checked) {
+			autoUpdate = true;
+			updateButton.disabled = true;
+			updateImagesResize();
+		}
+		else {
+			autoUpdate = false;
+			updateButton.disabled = false;
+		}
+	}
+	updateButton.onclick = function () {
+		// Resize all images when update button is clicked
+		updateImagesResize();
+	}
 	inputSlider.oninput = function () {
 		// Update values
 		let i = this.value;
@@ -137,7 +157,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		inputType = "s";
 
 		// Resize images update
-		updateImagesResize();
+		if (updateCheckbox.checked) { updateImagesResize() };
 	};
 	inputWidth.onchange = function () {
 		// Update values
@@ -148,7 +168,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		inputType = "w";
 
 		// Resize images update
-		updateImagesResize();
+		if (updateCheckbox.checked) { updateImagesResize() };
 	};
 	inputHeight.onchange = function () {
 		// Update values
@@ -159,14 +179,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		inputType = "h";
 
 		// Resize images update
-		updateImagesResize();
+		if (updateCheckbox.checked) { updateImagesResize() };
 	};
 
 
 	// --------------------------------------------------- //
 	// Resizer caller
 	resizeImage = function (id) {
-		//console.log("Resize call--", id, resizingFactor);
+		console.log("Resize call--", id, resizingFactor);
 		// Assign img to variable
 		let img_old = document.getElementById(imageList[id].id_img_old);
 		let img_new = document.getElementById(imageList[id].id_img_new);
@@ -186,7 +206,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		}
 
 		// Assign the image
-		img_new.src = canvas.toDataURL('image/jpeg');
+		let type = "image/" + imageList[id].ext_old;
+		img_new.src = canvas.toDataURL(type);
 		imageList[id].url = img_new.src;
 
 		// Ensure new resizer call when is loaded
@@ -223,14 +244,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			console.log("FP Add File Function called");
 
 			// Assign image to list
-			id = saveImageData(fileItem.file.name, URL.createObjectURL(fileItem.file), fileItem.fileSize, fileItem.id);
+			id = saveImageData(fileItem.file.name, URL.createObjectURL(fileItem.file), fileItem.fileSize, fileItem.fileExtension, fileItem.id);
 
 			// Add previous images to DOM
 			addPrevImageToDOM(fileItem, id);
 			addResizedImageToDOM(fileItem, id);
 
 			// Resize image and add to the list
-			resizeImage(id);
+			if (autoUpdate) { resizeImage(id); }
 
 			// Add download button
 			addDownloadButton(id);
