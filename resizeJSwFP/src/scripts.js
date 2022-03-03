@@ -7,11 +7,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	const imagePrevContainer = document.getElementById("imagePrevContainer");
 	const downloadContainer = document.getElementById("downloadContainer");
 	const presetListContainer = document.getElementById("presetListContainer");
+	const dataContainer = document.getElementById("dataContainer");
 	const inputSlider = document.getElementById("range");
 	const inputWidth = document.getElementById("width");
 	const inputHeight = document.getElementById("height");
 	const updateButton = document.getElementById("updateButton");
 	const updateCheckbox = document.getElementById("updateCheckbox");
+	const autoForceCheckbox = document.getElementById("autoForceCheckbox");
 
 	// Variables
 	var presetSizeCategorySet = new Set();
@@ -20,7 +22,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	var resizingFactor = 0.5;
 	var resizingWidth = 0;
 	var resizingHeight = 0;
-	var autoUpdate = false;
+	var autoUpdate = true;
+	var maxSizeForce = false;
+	var minSizeValue = 50;
 
 	// Image Class Constructor
 	class imageData {
@@ -70,7 +74,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		}
 		console.error("Trying to remove a not found image.");
 	}
-	
+
 	// Standard sizes options
 	setSelectListOptions = function () {
 		// Load categories into set
@@ -173,14 +177,32 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			downloadContainer.style.visibility = "hidden";
 			clearValues();
 		}
+		imagePrevContainer.style.display = "none";
 	}
 	displayState(false);
+	dataDisplay = function () {
+		let new_data = document.createElement("span");
+		new_data.innerHTML = "[Data to be displayed]"
+		dataContainer.appendChild(new_data);
+	}
+	dataDisplay();
+	checkAutoUpdateMode = function () {
+		// Check defined mode when start app
+		if (autoUpdate == true) {
+			updateCheckbox.checked = true;
+			updateButton.disabled = true;
+		}
+		else {
+			autoUpdate = false;
+			updateButton.disabled = false;
+		}
+	}
+	checkAutoUpdateMode();
 	addDownloadButton = function (id) {
 		// Add button variable
 		let new_button = document.createElement("button");
 		new_button.id = imageList[id].id_btn;
 		new_button.innerHTML = "Download image " + imageList[id].id_img + " - " + imageList[id].name;
-
 		// Add listener
 		new_button.onclick = function () {
 			//filename = "freeimageresizer_" + resizingWidth + "x" + resizingHeight + "_" + imageList[id].name;
@@ -193,7 +215,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			element.click();
 			//console.log("Downloaded: ", new_button.id);
 		}
-
 		// Append element to DOM
 		downloadContainer.appendChild(new_button);
 	}
@@ -213,7 +234,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		new_img.src = URL.createObjectURL(fileItem.file);
 		imagePrevContainer.appendChild(new_img);
 	}
-
 	updateCheckbox.onclick = function () {
 		if (this.checked) {
 			autoUpdate = true;
@@ -223,6 +243,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		else {
 			autoUpdate = false;
 			updateButton.disabled = false;
+		}
+	}
+	autoForceCheckbox.onclick = function () {
+		if (this.checked) {
+			maxSizeForce = true;
+		}
+		else {
+			maxSizeForce = false;
 		}
 	}
 	updateButton.onclick = function () {
@@ -243,28 +271,44 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	inputWidth.onchange = function () {
 		// Update values
 		let i = this.value;
+		let z = inputHeight.value;
 		clearValues();
 		this.value = i;
 		resizingWidth = parseInt(i);
 		inputType = "w";
 
+		if (maxSizeForce) { 
+			if (z == "") { z = i };
+			inputHeight.value = z;
+			resizingHeight = parseInt(z);
+			inputType = "forced";
+		}
+		
 		// Resize images update
 		if (updateCheckbox.checked) { updateImagesResize() };
 	};
 	inputHeight.onchange = function () {
 		// Update values
 		let i = this.value;
+		let z = inputWidth.value;
 		clearValues();
 		this.value = i;
 		resizingHeight = parseInt(i);
 		inputType = "h";
+
+		if (maxSizeForce) { 
+			if (z == "") { z = i };
+			inputWidth.value = z;
+			resizingWidth = parseInt(z);
+			inputType = "forced";
+		}
 
 		// Resize images update
 		if (updateCheckbox.checked) { updateImagesResize() };
 	};
 	unputButtonPresetUpdate = function (button_id) {
 		// Get values
-		let w; 
+		let w;
 		let h;
 		for (i in presetSizeDataList) {
 			if (button_id == presetSizeDataList[i].name) {
@@ -272,7 +316,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 				h = presetSizeDataList[i].height;
 			}
 		}
-
 		// Update values
 		clearValues();
 		resizingWidth = w;
@@ -287,14 +330,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	// --------------------------------------------------- //
 	// Resizer caller
 	resizeImage = function (id) {
-		console.log("Resize call--", id, resizingFactor);
+		console.log("Resize call (id, scale) --", id, resizingFactor);
 		// Assign img to variable
 		let img_old = document.getElementById(imageList[id].id_img_old);
 		let img_new = document.getElementById(imageList[id].id_img_new);
-		let canvas;
+		//let canvas;
 
 		// Select resizing method and Call the resizer
-		if (inputType == "s") {
+		let canvas = downScaleImage(img_old, inputType, resizingFactor, resizingWidth, resizingHeight);
+
+		/*if (inputType == "s") {
 			canvas = downScaleImage(img_old, resizingFactor);
 		}
 		else if (inputType == "w") {
@@ -306,6 +351,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			canvas = downScaleImage(img_old, undefined, resizingWidth);
 		} else if (inputType == "p") {
 			canvas = downScaleImage(img_old, undefined, resizingWidth);
+		}*/
+
+		// Prevent from error in downsampling
+		if (canvas == undefined) {
+			console.error("Downsample not possible, canvas undefined")
+			return;
 		}
 
 		// Assign the image

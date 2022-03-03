@@ -41,7 +41,7 @@
 		#imageResizedContainer {}
 
 		.singleImage {
-			max-width: 100%;
+			/*max-width: 100%;*/
 		}
 
 		.inputValue {
@@ -100,10 +100,12 @@
 
 			<!-- Previews -->
 			<div id="imagesPreviewContainer">
-				<h2>Resized image</h2>
-				<div id="imageResizedContainer"></div>
-				<h2>Prev image</h2>
-				<div id="imagePrevContainer"></div>
+				<div id="imageResizedContainer">
+					<h2>Resized image</h2>
+				</div>
+				<div id="imagePrevContainer">
+					<h2>Prev image</h2>
+				</div>
 			</div>
 		</div>
 
@@ -111,7 +113,6 @@
 		<div class="column">
 			<!-- Options and Preview -->
 			<h2>Mode</h2>
-			</br>
 			Define update mode (auto or manual)
 			</br></br>
 			<div id="updateModeContainer">
@@ -121,23 +122,28 @@
 			</br>
 
 			<h2>Options</h2>
-			</br></br>
 			<div id="sliderContainer">
-				Scale to a percentage (default): <input type="range" min="5" max="95" value="50" class="slider"
+				> Scale to a percentage (default): <input type="range" min="5" max="95" value="50" class="slider"
 					id="range">
 			</div>
 			</br>
 			<div id="sizeContainer">
-				Scale to a custom size -
+				> Scale to a max fixed size: </br>
 				w: <input min="0" max="2500" class="inputValue" id="width" placeholder="auto">px or
 				h: <input min="0" max="2500" class="inputValue" id="height" placeholder="auto">px
+				</br>
+				auto calc proportions, or check to force: <input id="autoForceCheckbox" type="checkbox">
+				</form>
 			</div>
 			</br>
 			<div id="presetListContainer">
-				Scale to a standard size -
+				> Scale to a standard size -
 			</div>
 			</br>
 
+			<h2>Data</h2>
+			<div id="dataContainer"></div>
+			</br>
 		</div>
 	</div>
 

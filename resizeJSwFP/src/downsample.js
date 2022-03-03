@@ -1,14 +1,68 @@
+// Simple downsample
+function downScaleImage(img, inputType, resizingFactor, resizingWidth, resizingHeight) {
+    // Define type and variables
+    let finalWidth = 100;
+    let finalHeight = 100;
+
+    if (inputType == "s") {
+        // Scale factor
+        finalWidth = Math.floor(img.width * resizingFactor);
+        finalHeight = Math.floor(img.height * resizingFactor);
+    }
+    else if (inputType == "w") {
+        // Width only
+        let scale = resizingWidth / img.width;
+        finalWidth = resizingWidth
+        finalHeight = Math.ceil(img.height * scale);
+    }
+    else if (inputType == "h") {
+        // Height only
+        let scale = resizingHeight / img.height;
+        finalWidth = Math.ceil(img.width * scale);
+        finalHeight = resizingHeight;
+    } else if (inputType == "p") {
+        // Preset width and height
+        finalWidth = resizingWidth;
+        finalHeight = resizingHeight;
+    } else if (inputType == "forced") {
+        finalWidth = resizingWidth;
+        finalHeight = resizingHeight;
+    }
+
+
+    // Create a new canvas
+    let canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx = canvas.getContext("2d");
+
+    // Define with and height of scaled canvas
+    canvas.width = finalWidth;
+    canvas.height = finalHeight;
+    ctx.drawImage(img, 0, 0, finalWidth, finalHeight);
+
+    return canvas;
+}
+
+
+
+
+
+
 // Multiple downsample
 
-// scales the image by (float) scale < 1 and returns a canvas containing the scaled image.
+// Scales the image by (float) scale < 1 and returns a canvas containing the scaled image.
+/*
 function downScaleImage(img, scale, width) {
-    var imgCV = document.createElement('canvas');
-    imgCV.width = img.width;
-    imgCV.height = img.height;
-    var imgCtx = imgCV.getContext('2d');
-    imgCtx.drawImage(img, 0, 0);
-    return downScaleCanvas(imgCV, scale, width);
+var imgCV = document.createElement('canvas');
+imgCV.width = img.width;
+imgCV.height = img.height;
+var imgCtx = imgCV.getContext('2d');
+imgCtx.drawImage(img, 0, 0);
+
+return downScaleCanvas(imgCV, scale, width);
 }
+*/
 function downScaleCanvas(cv, scale, width) {
     // If scale is fixed, force to fixed width
     if (width) {
@@ -156,34 +210,3 @@ function downScaleCanvas(cv, scale, width) {
     resCtx.putImageData(imgRes, 0, 0);
     return resCV;
 }
-
-
-
-// Simple downsample
-
-// Draw canvas
-/*
-function resizeImage() {
-    var image = document.createElement('img');
-    image.onload = function () {
-        // Define
-        var canvas = document.createElement('canvas');
-        var w = resizingWidth;
-        var h = resizingHeight;
-        originalWidth = image.width;
-        originalHeight = image.height;
-        canvas.width = w;
-        canvas.height = h;
-        var context = canvas.getContext('2d');
-    
-        // Draw new image
-        context.drawImage(image, 0, 0, w, h);
-        resizedImage.src = canvas.toDataURL('image/jpeg', 0.9);
-        newURL = resizedImage.src;
-        displayState(true);
-    };
-    
-    // Assign image
-    image.src = originalURL;
-}
-*/
