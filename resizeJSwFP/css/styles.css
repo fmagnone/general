@@ -1,0 +1,50 @@
+.column {
+  float: left;
+  width: 50%;
+}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#imageResizedContainer {
+}
+.singleImage {
+  /*max-width: 100%;*/
+}
+#sliderContainer {
+  width: 100%;
+}
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 5px;
+  background: #d3d3d3;
+}
+.inputValue {
+  max-width: 60px;
+}
+.categoryContainer {
+}
+.sizeButtonContainer {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sizeButton {
+  display: block;
+  width: 80px;
+  height: 80px;
+  margin: 3px;
+  background-color: #e4e4e4;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  text-align: center;
+}
+.sizeButton:hover {
+  background-color: #d2d2d2;
+}
+.sizeTag {
+  display: block;
+}

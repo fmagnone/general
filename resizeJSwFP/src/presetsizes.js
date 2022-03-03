@@ -10,9 +10,10 @@ class presetSizeData {
     }
 }
 
-// Add data in a variable
+// Variables
 var presetSizeDataList = [];
 
+// Add data
 presetSizeDataList.push(new presetSizeData(
     "Instagram", 
     "instagram_story", 
@@ -106,6 +107,4 @@ presetSizeDataList.push(new presetSizeData(
 ));
 
 // Console info
-//console.log(presetSizeDataList);
-//export { presetSizeDataList };
-console.log("Preset size data loaded");
+//console.log("Preset size data loaded");
