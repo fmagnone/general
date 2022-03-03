@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', (event) => {
 
 	// Elements
-	const imagesDiv = document.querySelector("#images");
+	const imagesDiv = document.getElementById("imagesPreviewContainer");
 	const imageResizedContainer = document.getElementById("imageResizedContainer");
 	const imagePrevContainer = document.getElementById("imagePrevContainer");
 	const downloadContainer = document.getElementById("downloadContainer");
@@ -201,6 +201,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		// Add image to DOM
 		var new_img = document.createElement("img");
 		new_img.id = "img_res_" + id;
+		new_img.className = "singleImage";
 		new_img.src = URL.createObjectURL(fileItem.file);
 		imageResizedContainer.appendChild(new_img);
 	}
@@ -208,6 +209,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		// Add image to DOM
 		var new_img = document.createElement("img");
 		new_img.id = "img_prev_" + id;
+		new_img.className = "singleImage";
 		new_img.src = URL.createObjectURL(fileItem.file);
 		imagePrevContainer.appendChild(new_img);
 	}
@@ -328,7 +330,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	// FilePond caller
 
 	// Register the plugin
-	FilePond.registerPlugin(FilePondPluginImageResize, FilePondPluginImagePreview);
+	//FilePond.registerPlugin(FilePondPluginImageResize, FilePondPluginImagePreview);
 
 	// Get a file input reference
 	const input = document.querySelector('input[type="file"]');

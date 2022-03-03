@@ -63,11 +63,46 @@ presetSizeDataList.push(new presetSizeData(
     1200, 628
 ));
 presetSizeDataList.push(new presetSizeData(
-    "Custom", 
-    "custom", 
-    "Custom", 
-    "?:?",
-    800, 600
+    "Standard", 
+    "standard_square", 
+    "Square", 
+    "1:1",
+    900, 900
+));
+presetSizeDataList.push(new presetSizeData(
+    "Standard", 
+    "standard_widescreen", 
+    "Widescreen", 
+    "16:9",
+    1600, 900
+));
+presetSizeDataList.push(new presetSizeData(
+    "Standard", 
+    "standard_iphone", 
+    "iPhone", 
+    "9:16",
+    900, 1600
+));
+presetSizeDataList.push(new presetSizeData(
+    "Standard", 
+    "standard_presentation", 
+    "Presentation", 
+    "4:3",
+    1200, 900
+));
+presetSizeDataList.push(new presetSizeData(
+    "Standard", 
+    "standard_landscape", 
+    "Landscape", 
+    "3:2",
+    1350, 900
+));
+presetSizeDataList.push(new presetSizeData(
+    "Standard", 
+    "standard_portrait", 
+    "Portrait", 
+    "2:3",
+    900, 1350
 ));
 
 // Console info

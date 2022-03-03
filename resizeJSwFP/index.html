@@ -26,26 +26,36 @@
 			height: 5px;
 			background: #d3d3d3;
 		}
+
 		.column {
 			float: left;
 			width: 50%;
 		}
+
 		.row:after {
 			content: "";
 			display: table;
 			clear: both;
 		}
+
+		#imageResizedContainer {}
+
+		.singleImage {
+			max-width: 100%;
+		}
+
 		.inputValue {
 			max-width: 60px;
 		}
-		.categoryContainer {
-			
-		}
+
+		.categoryContainer {}
+
 		.sizeButtonContainer {
 			display: inline-flex;
 			flex-direction: column;
 			align-items: center;
 		}
+
 		.sizeButton {
 			display: block;
 			width: 80px;
@@ -56,13 +66,15 @@
 			border-radius: 3px;
 			text-align: center;
 		}
+
 		.sizeButton:hover {
 			background-color: #d2d2d2;
 		}
+
 		.sizeTag {
 			display: block;
 		}
-		
+
 	</style>
 </head>
 
@@ -73,21 +85,46 @@
 	<div class="row">
 		<div class="column">
 			<!-- FilePond Upload -->
+			<h2>Upload</h2>
 			<form method="POST">
 				<input id="fileUpload" type="file" class="filepond" name="filepond" multiple data-allow-reorder="true"
 					data-max-file-size="3MB" data-max-files="3">
 			</form>
 			</br>
 
+			<!-- Download buttons -->
+			<div id="downloadContainer">
+				Download Files:</br>
+			</div>
+			</br>
+
+			<!-- Previews -->
+			<div id="imagesPreviewContainer">
+				<h2>Resized image</h2>
+				<div id="imageResizedContainer"></div>
+				<h2>Prev image</h2>
+				<div id="imagePrevContainer"></div>
+			</div>
 		</div>
 
 
 		<div class="column">
 			<!-- Options and Preview -->
-			--------- Options ---------
+			<h2>Mode</h2>
+			</br>
+			Define update mode (auto or manual)
+			</br></br>
+			<div id="updateModeContainer">
+				<button id="updateButton">Update</button> or
+				check for auto-update <input id="updateCheckbox" type="checkbox">
+			</div>
+			</br>
+
+			<h2>Options</h2>
 			</br></br>
 			<div id="sliderContainer">
-				Scale to a percentage: <input type="range" min="5" max="95" value="50" class="slider" id="range">
+				Scale to a percentage (default): <input type="range" min="5" max="95" value="50" class="slider"
+					id="range">
 			</div>
 			</br>
 			<div id="sizeContainer">
@@ -100,29 +137,12 @@
 				Scale to a standard size -
 			</div>
 			</br>
-			--------- Update mode ---------
-			</br></br>
-			<div id="updateModeContainer">
-				<button id="updateButton">Update</button> or
-				check for auto-update <input id="updateCheckbox" type="checkbox">
-			</div>
-			</br>
-			<div id="downloadContainer">
-				--------- Download Files ---------</br>
-			</div>
-			</br>
-			<div id="images">
-				--------- Image previews ---------</br>
-				<h2>Last image added with resizing</h2>
-				<div id="imageResizedContainer"></div>
-				<h2>Prev image</h2>
-				<div id="imagePrevContainer"></div>
-			</div>
+
 		</div>
 	</div>
 
 	<!-- Custom -->
-	<script src="src/presetsize.js"></script>
+	<script src="src/presetsizes.js"></script>
 	<script src="src/downsample.js"></script>
 	<script src="src/scripts.js"></script>
 
