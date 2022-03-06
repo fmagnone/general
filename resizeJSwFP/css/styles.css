@@ -10,7 +10,8 @@
 #imageResizedContainer {
 }
 .singleImage {
-  /*max-width: 100%;*/
+  /**/
+  max-width: 100%;
 }
 #sliderContainer {
   width: 100%;
@@ -47,4 +48,7 @@
 }
 .sizeTag {
   display: block;
+}
+.selected {
+  border: green solid 1px;
 }

@@ -13,34 +13,41 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	const inputHeight = document.getElementById("height");
 	const updateButton = document.getElementById("updateButton");
 	const updateCheckbox = document.getElementById("updateCheckbox");
-	const autoForceCheckbox = document.getElementById("autoForceCheckbox");
+	const cropModeCheckbox = document.getElementById("cropModeCheckbox");
+	const containModeCheckbox = document.getElementById("containModeCheckbox");
+	const autoForceWidthHeightCheckbox = document.getElementById("autoForceWidthHeightCheckbox");
 
 	// Variables
 	var presetSizeCategorySet = new Set();
 	var imageList = [];
 	var inputType = "s";
+	var cropMode = true;
+	var forceMode = false;
 	var resizingFactor = 0.5;
 	var resizingWidth = 0;
 	var resizingHeight = 0;
 	var autoUpdate = true;
-	var maxSizeForce = false;
 	var minSizeValue = 50;
 
 	// Image Class Constructor
 	class imageData {
-		constructor(name, url, size_old, id_img_old, ext_old, id_img_new, id_btn, id_file) {
+		constructor(name, url, size_old, id_img_old, ext_old, id_img_new, id_btn, id_file, ext_new, size_new, res_old, res_new) {
 			this.valid = true;
 			this.name = name;
 			this.url = url;
 			this.id_img_old = id_img_old;
 			this.id_img_new = id_img_new;
-			this.ext_old = ext_old;
 			this.id_btn = id_btn;
 			this.id_file = id_file;
+			this.ext_old = ext_old;
+			this.ext_new = ext_new;
 			this.size_old = size_old;
+			this.size_new = size_new;
+			this.res_old = res_old;
+			this.res_new = res_new;
 		}
 	}
-	saveImageData = function (name, url, size, ext, id_file) {
+	saveImageData = function (name, url, size_old, ext_old, id_file) {
 		// Save image data into the list
 		// Get current ID
 		id = imageList.length;
@@ -49,12 +56,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		var new_image = new imageData();
 		new_image.name = name;
 		new_image.url = url;
+		new_image.size_old = size_old;
+		new_image.ext_old = ext_old;
 		new_image.id_file = id_file;
-		new_image.ext_old = ext;
-		new_image.id_img_old = "img_prev_" + id;
 		new_image.id_img_new = "img_res_" + id;
+		new_image.id_img_old = "img_prev_" + id;
 		new_image.id_btn = "download_" + id;
-		new_image.size_old = size;
+		new_image.ext_new = "ext new undefined";
+		new_image.size_new = "size new undefined?";
+		new_image.res_old = "res old undefined";
+		new_image.res_new = "res new undefined";
 
 		// Push data
 		imageList.push(new_image);
@@ -109,7 +120,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 					button.id = presetSizeDataList[i].name;
 					button.className = "sizeButton";
 					button.innerHTML = presetSizeDataList[i].prop;
-					button.onclick = function () { unputButtonPresetUpdate(this.id) };
+					button.onclick = function () { inputButtonPresetUpdate(this.id) };
 					tag_name.innerHTML = presetSizeDataList[i].tag;
 					tag_name.className = "sizeTag";
 					tag_size.innerHTML = presetSizeDataList[i].width + "x" + presetSizeDataList[i].height;
@@ -165,6 +176,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		inputHeight.value = "";
 		inputType = "s";
 	}
+	clearStyles = function () {
+		// Clear style in all selectable elements
+		inputSlider.classList.remove('selected');
+		inputWidth.classList.remove('selected');
+		inputHeight.classList.remove('selected');
+		for (i in presetSizeDataList) {
+			let element = document.getElementById(presetSizeDataList[i].name);
+			element.classList.remove('selected');
+		};
+	}
 	displayState = function (show) {
 		if (show) {
 			// Show image
@@ -181,10 +202,36 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	}
 	displayState(false);
 	dataDisplay = function () {
-		let new_data = document.createElement("span");
-		new_data.innerHTML = "[Data to be displayed]"
-		dataContainer.appendChild(new_data);
-	}
+		// Clear
+		dataContainer.innerHTML = "";
+		let empty = true;
+
+		// If there is valid images, return info
+		for (i in imageList) {
+			if (imageList[i].valid) {
+				let img_data = document.createElement("div");
+				img_data.id = "data_" + imageList[i].id_btn;
+				img_data.innerHTML = "IMAGE " + i + " </br>";
+				img_data.innerHTML += "File name: " + imageList[i].name + " </br>";
+				img_data.innerHTML += "File extension: " + imageList[i].ext_old + " </br>";
+				img_data.innerHTML += "Size original: " + imageList[i].size_old + " bytes </br>";
+				img_data.innerHTML += "Size new: " + imageList[i].size_new + " bytes </br>";
+				img_data.innerHTML += "Resolution original: " + imageList[i].res_old + " px </br>";
+				img_data.innerHTML += "Resolution new: " + imageList[i].res_new + " px </br>";
+				img_data.innerHTML += "</br></br>"
+				dataContainer.appendChild(img_data);
+				//console.log(imageList[i]);
+				empty = false;
+			}
+		}
+
+		// No valid images, delete all data
+		if (empty) {
+			let no_data = document.createElement("span");
+			no_data.innerHTML = "No data to be displayed"
+			dataContainer.appendChild(no_data);
+		};
+	};
 	dataDisplay();
 	checkAutoUpdateMode = function () {
 		// Check defined mode when start app
@@ -217,6 +264,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		}
 		// Append element to DOM
 		downloadContainer.appendChild(new_button);
+
+		// Check for data listed and add second button, --temporary
+		/*let data_text = document.getElementById("data_" + imageList[id].id_btn);
+		console.log(data_text);
+		if(data_text) {
+			//data_text.appendChild(new_button);
+		}*/
 	}
 	addResizedImageToDOM = function (fileItem, id) {
 		// Add image to DOM
@@ -234,7 +288,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		new_img.src = URL.createObjectURL(fileItem.file);
 		imagePrevContainer.appendChild(new_img);
 	}
-	updateCheckbox.onclick = function () {
+	updateCheckbox.onchange = function () {
 		if (this.checked) {
 			autoUpdate = true;
 			updateButton.disabled = true;
@@ -245,12 +299,46 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			updateButton.disabled = false;
 		}
 	}
-	autoForceCheckbox.onclick = function () {
+	cropModeCheckbox.onchange = function () {
 		if (this.checked) {
-			maxSizeForce = true;
+			cropMode = true;
+			containModeCheckbox.checked = false;
+
+			// Resize images update
+			if (updateCheckbox.checked) { updateImagesResize() };
 		}
 		else {
-			maxSizeForce = false;
+			cropMode = false;
+			containModeCheckbox.checked = true;
+		}
+	}
+	containModeCheckbox.onchange = function () {
+		if (this.checked) {
+			cropMode = false;
+			cropModeCheckbox.checked = false;
+
+			// Resize images update
+			if (updateCheckbox.checked) { updateImagesResize() };
+		}
+		else {
+			cropMode = true;
+			cropModeCheckbox.checked = true;
+		}
+	}
+	autoForceWidthHeightCheckbox.onchange = function () {
+		if (this.checked) {
+			forceMode = true;
+			//cropModeCheckbox.checked = false;
+			//containModeCheckbox.checked = false;
+		}
+		else {
+			forceMode = false;
+			clearValues();
+			clearStyles();
+			//updateImagesResize();
+			//forceModeCheckbox.checked = false;
+			//cropMode = "crop";
+			//cropModeCheckbox.checked = true;
 		}
 	}
 	updateButton.onclick = function () {
@@ -265,10 +353,26 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		resizingFactor = i / 100;
 		inputType = "s";
 
+		// Update styles
+		clearStyles();
+		this.classList.add("selected");
+
 		// Resize images update
 		if (updateCheckbox.checked) { updateImagesResize() };
 	};
 	inputWidth.onchange = function () {
+		// Check user input
+		if (this.value < minSizeValue) {
+			console.log("Width min value: " + minSizeValue);
+			this.value = "";
+			return;
+		}
+		if (isNaN(this.value)) {
+			console.log("Width should be a numeric value");
+			this.value = "";
+			return;
+		}
+
 		// Update values
 		let i = this.value;
 		let z = inputHeight.value;
@@ -277,17 +381,35 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		resizingWidth = parseInt(i);
 		inputType = "w";
 
-		if (maxSizeForce) { 
+		// Update styles
+		clearStyles();
+		this.classList.add("selected");
+
+		// Update values and styles if forced
+		if (forceMode) {
 			if (z == "") { z = i };
 			inputHeight.value = z;
 			resizingHeight = parseInt(z);
 			inputType = "forced";
+			inputHeight.classList.add("selected");
 		}
-		
+
 		// Resize images update
 		if (updateCheckbox.checked) { updateImagesResize() };
 	};
 	inputHeight.onchange = function () {
+		// Check user input
+		if (this.value < minSizeValue) {
+			console.log("Height min value: " + minSizeValue);
+			this.value = "";
+			return;
+		}
+		if (isNaN(this.value)) {
+			console.log("Height should be a numeric value");
+			this.value = "";
+			return;
+		}
+
 		// Update values
 		let i = this.value;
 		let z = inputWidth.value;
@@ -296,17 +418,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		resizingHeight = parseInt(i);
 		inputType = "h";
 
-		if (maxSizeForce) { 
+		// Update styles
+		clearStyles();
+		this.classList.add("selected");
+
+		// Update values and styles if forced
+		if (forceMode) {
 			if (z == "") { z = i };
 			inputWidth.value = z;
 			resizingWidth = parseInt(z);
 			inputType = "forced";
+			inputWidth.classList.add("selected");
 		}
 
 		// Resize images update
 		if (updateCheckbox.checked) { updateImagesResize() };
 	};
-	unputButtonPresetUpdate = function (button_id) {
+	inputButtonPresetUpdate = function (button_id) {
 		// Get values
 		let w;
 		let h;
@@ -322,6 +450,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		resizingHeight = h;
 		inputType = "p";
 
+		// Update styles
+		clearStyles();
+		let element = document.getElementById(button_id);
+		element.classList.add("selected");
+
 		// Resize images update
 		if (updateCheckbox.checked) { updateImagesResize() };
 	}
@@ -331,27 +464,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	// Resizer caller
 	resizeImage = function (id) {
 		console.log("Resize call (id, scale) --", id, resizingFactor);
+
 		// Assign img to variable
 		let img_old = document.getElementById(imageList[id].id_img_old);
 		let img_new = document.getElementById(imageList[id].id_img_new);
-		//let canvas;
 
 		// Select resizing method and Call the resizer
-		let canvas = downScaleImage(img_old, inputType, resizingFactor, resizingWidth, resizingHeight);
-
-		/*if (inputType == "s") {
-			canvas = downScaleImage(img_old, resizingFactor);
-		}
-		else if (inputType == "w") {
-			canvas = downScaleImage(img_old, undefined, resizingWidth);
-		}
-		else if (inputType == "h") {
-			let scale = resizingHeight / img_old.height;
-			resizingWidth = Math.ceil(img_old.width * scale);
-			canvas = downScaleImage(img_old, undefined, resizingWidth);
-		} else if (inputType == "p") {
-			canvas = downScaleImage(img_old, undefined, resizingWidth);
-		}*/
+		let canvas = downScaleImage(img_old, inputType, cropMode, resizingFactor, resizingWidth, resizingHeight);
 
 		// Prevent from error in downsampling
 		if (canvas == undefined) {
@@ -363,6 +482,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		let type = "image/" + imageList[id].ext_old;
 		img_new.src = canvas.toDataURL(type);
 		imageList[id].url = img_new.src;
+
+		// Update imagelist data and reload data displayed
+		img_new.onload = function () {
+			imageList[id].res_old = img_old.width + " x " + img_old.height;
+			imageList[id].res_new = img_new.width + " x " + img_new.height + " (not correct) ";
+			//console.log(img_new.size);
+			//console.log("new", img_new.width, img_new.height); // img new tiene max width 100% y no carga el tamaño real
+			// Update data displayed
+			dataDisplay();
+		}
+
+		// Update data displayed
+		dataDisplay();
 
 		// Ensure new resizer call when is loaded
 		img_old.onload = function () { updateImagesResize(); };
@@ -391,7 +523,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		// CONFIG ------------
 		// Only accept images
 		acceptedFileTypes: ['image/*'],
-		maxFiles: 10,
 
 		// FUNCTIONS ------------
 		// Call back when image is added
@@ -399,7 +530,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			console.log("FP Add File Function called");
 
 			// Assign image to list
-			id = saveImageData(fileItem.file.name, URL.createObjectURL(fileItem.file), fileItem.fileSize, fileItem.fileExtension, fileItem.id);
+			id = saveImageData(
+				fileItem.file.name,
+				URL.createObjectURL(fileItem.file),
+				fileItem.fileSize,
+				fileItem.fileExtension,
+				fileItem.id);
 
 			// Add previous images to DOM
 			addPrevImageToDOM(fileItem, id);
@@ -425,9 +561,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			let off = true;
 			for (let i in imageList) { if (imageList[i].valid == true) { off = false; } }
 			if (off) { displayState(false) }
-		},
 
+			// Update data display
+			dataDisplay();
+		},
 	});
+	pond.maxFiles = 10;
 
 
 	// DOM info

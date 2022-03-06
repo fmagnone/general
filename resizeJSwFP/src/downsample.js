@@ -1,5 +1,5 @@
 // Simple downsample
-function downScaleImage(img, inputType, resizingFactor, resizingWidth, resizingHeight) {
+function downScaleImage(img, inputType, cropMode, resizingFactor, resizingWidth, resizingHeight) {
     // Define type and variables
     let finalWidth = 100;
     let finalHeight = 100;

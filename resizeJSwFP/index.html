@@ -51,7 +51,7 @@
 
 		<div class="column">
 			<!-- Options and Preview -->
-			<h2>Mode</h2>
+			<h2>Update</h2>
 			Define update mode (auto or manual)
 			</br></br>
 			<div id="updateModeContainer">
@@ -61,6 +61,11 @@
 			</br>
 
 			<h2>Options</h2>
+			<div id="modeContainer">
+				> Crop <input id="cropModeCheckbox" type="checkbox" checked> - 
+				Contain <input id="containModeCheckbox" type="checkbox">
+			</div>
+			</br>
 			<div id="sliderContainer">
 				> Scale to a percentage (default): <input type="range" min="5" max="95" value="50" class="slider"
 					id="range">
@@ -71,7 +76,7 @@
 				w: <input min="0" max="2500" class="inputValue" id="width" placeholder="auto">px or
 				h: <input min="0" max="2500" class="inputValue" id="height" placeholder="auto">px
 				</br>
-				auto calc proportions, or check to force: <input id="autoForceCheckbox" type="checkbox">
+				auto calc proportions, or check to force: <input id="autoForceWidthHeightCheckbox" type="checkbox">
 				</form>
 			</div>
 			</br>
