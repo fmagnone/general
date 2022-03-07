@@ -7,24 +7,32 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
 	<!-- Custom -->
-	<link href="css/styles.css"rel="stylesheet" />
-		
+	<link href="css/styles.css" rel="stylesheet" />
+
 	<!-- FilePond-->
 	<!-- Copyright (c) 2019 PQINA | Rik Schennink <rik@pqina.nl> -->
 	<link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
-	
+
 	<!-- Title -->
 	<title>Image Resizer JS and FP</title>
 </head>
 
 <body>
 	<h1>Image Resizer</h1>
-	<p>Upload an image and it will be shown both original and resized</p>
+	<p>Upload up to 10 images and select resizing options</p>
 
 	<div class="row">
 		<div class="column">
 			<!-- FilePond Upload -->
 			<h2>Upload</h2>
+			Click to upload example:
+			</br>
+			<img src="img/couple.jpg" alt="Italian Trulli" height="70px;" class="example_image">
+			<img src="img/paris.jpg" alt="Italian Trulli" height="70px;" class="example_image">
+			<img src="img/porsche.jpg" alt="Italian Trulli" height="70px;" class="example_image">
+			</br>
+			</br>
+			Upload files:
 			<form method="POST">
 				<input id="fileUpload" type="file" class="filepond" name="filepond" multiple data-allow-reorder="true"
 					data-max-file-size="3MB" data-max-files="3">
@@ -62,8 +70,9 @@
 
 			<h2>Options</h2>
 			<div id="modeContainer">
-				> Crop <input id="cropModeCheckbox" type="checkbox" checked> - 
-				Contain <input id="containModeCheckbox" type="checkbox">
+				> Crop <input id="cropModeCheckbox" type="checkbox" checked> -
+				Contain <input id="containModeCheckbox" type="checkbox"> 
+				(background color: <input type="color" id="backColorPicker" name="backColorPicker" value="#f5f5f5">)
 			</div>
 			</br>
 			<div id="sliderContainer">

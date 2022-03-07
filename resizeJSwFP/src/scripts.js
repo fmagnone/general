@@ -16,13 +16,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	const cropModeCheckbox = document.getElementById("cropModeCheckbox");
 	const containModeCheckbox = document.getElementById("containModeCheckbox");
 	const autoForceWidthHeightCheckbox = document.getElementById("autoForceWidthHeightCheckbox");
+	const backColorPicker = document.getElementById("backColorPicker");	
+	const example_image = document.getElementsByClassName("example_image");
 
 	// Variables
 	var presetSizeCategorySet = new Set();
 	var imageList = [];
-	var inputType = "s";
+	var inputType = "percentage";
 	var cropMode = true;
 	var forceMode = false;
+	var backColor = "#f5f5f5";
 	var resizingFactor = 0.5;
 	var resizingWidth = 0;
 	var resizingHeight = 0;
@@ -63,7 +66,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		new_image.id_img_old = "img_prev_" + id;
 		new_image.id_btn = "download_" + id;
 		new_image.ext_new = "ext new undefined";
-		new_image.size_new = "size new undefined?";
+		new_image.size_new = "? (not calculated)";
 		new_image.res_old = "res old undefined";
 		new_image.res_new = "res new undefined";
 
@@ -174,7 +177,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		inputSlider.value = 50;
 		inputWidth.value = "";
 		inputHeight.value = "";
-		inputType = "s";
+		inputType = "percentage";
 	}
 	clearStyles = function () {
 		// Clear style in all selectable elements
@@ -245,11 +248,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		}
 	}
 	checkAutoUpdateMode();
+	for (var i = 0; i < example_image.length; i++) {
+		// Add example image event listeners
+		example_image[i].onclick = function(){
+			addCustomPond(this.src);
+		}
+	};
 	addDownloadButton = function (id) {
 		// Add button variable
 		let new_button = document.createElement("button");
 		new_button.id = imageList[id].id_btn;
-		new_button.innerHTML = "Download image " + imageList[id].id_img + " - " + imageList[id].name;
+		new_button.innerHTML = "Download " + imageList[id].id_img_old + " [" + imageList[id].name + "]";
 		// Add listener
 		new_button.onclick = function () {
 			//filename = "freeimageresizer_" + resizingWidth + "x" + resizingHeight + "_" + imageList[id].name;
@@ -325,6 +334,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			cropModeCheckbox.checked = true;
 		}
 	}
+	backColorPicker.onchange = function (){
+		backColor = this.value;
+		// Resize images update
+		if (updateCheckbox.checked) { updateImagesResize() };
+	}
 	autoForceWidthHeightCheckbox.onchange = function () {
 		if (this.checked) {
 			forceMode = true;
@@ -351,7 +365,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		clearValues();
 		this.value = i;
 		resizingFactor = i / 100;
-		inputType = "s";
+		inputType = "percentage";
 
 		// Update styles
 		clearStyles();
@@ -469,8 +483,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		let img_old = document.getElementById(imageList[id].id_img_old);
 		let img_new = document.getElementById(imageList[id].id_img_new);
 
-		// Select resizing method and Call the resizer
-		let canvas = downScaleImage(img_old, inputType, cropMode, resizingFactor, resizingWidth, resizingHeight);
+		// Call the resizer
+		let canvas = downScaleImage(img_old, inputType, cropMode, backColor, resizingFactor, resizingWidth, resizingHeight);
 
 		// Prevent from error in downsampling
 		if (canvas == undefined) {
@@ -568,6 +582,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	});
 	pond.maxFiles = 10;
 
+	addCustomPond = function(src) {
+		pond.addFile(src);
+	};
+
+	// TEMP auto testing
+	//pond.addFile("img/porsche.jpg");
+	pond.addFile("img/couple.jpg");
 
 	// DOM info
 	console.log('DOM fully loaded and parsed');
