@@ -15,26 +15,48 @@ function downScaleImage(img, inputType, cropMode, backColor, scalePercentage, fi
         // Scale image auto to a defined percentage
         cw = Math.ceil(sw * scalePercentage);
         ch = Math.ceil(sh * scalePercentage);
-    } else if (inputType == "fixed") {
-        // Scale image to a fixed dimension
-        cw = fixedWidth;
-        ch = fixedHeight;
-        // Prevent from cw=0 or ch=0
-        if (fixedWidth == 0) { cw = Math.ceil(sw / (sh / fixedHeight)); }
-        if (fixedHeight == 0) { ch = Math.ceil(sh / (sw / fixedWidth)); }
     } else if (inputType == "forced") {
         // Force image to a fixed size
         cw = fixedWidth;
         ch = fixedHeight;
         dw = fixedWidth;
         dh = fixedHeight;
+
+        // Prevent from cw canvas width or ch canvas height to be 0
+        if (fixedWidth == 0) { 
+            cw = Math.ceil(sw / (sh / fixedHeight)); 
+            dw = cw;
+        }
+        if (fixedHeight == 0) { 
+            ch = Math.ceil(sh / (sw / fixedWidth)); 
+            dh = ch;
+        }
+        if (fixedWidth == 0 && fixedHeight == 0) { 
+            cw = sw;
+            ch = sh;
+            dw = sw;
+            dh = sh;
+        }
+    } else if (inputType == "fixed") {
+        // Scale image to a fixed dimension
+        cw = fixedWidth;
+        ch = fixedHeight;
+
+        // Prevent from cw canvas width or ch canvas height to be 0
+        if (fixedWidth == 0) { cw = Math.ceil(sw / (sh / fixedHeight)); }
+        if (fixedHeight == 0) { ch = Math.ceil(sh / (sw / fixedWidth)); }
+        if (fixedWidth == 0 && fixedHeight == 0) { 
+            cw = sw;
+            ch = sh;
+        }
     };
 
-    // Calculate Scale Factor and scale size
-    let sfw = img.width / cw;
-    let sfh = img.height / ch;
-
+    // If type is not forced, crop or contain image
     if (inputType != "forced") {
+        // Calculate Scale Factor and scale size
+        let sfw = img.width / cw;
+        let sfh = img.height / ch;
+
         if (cropMode) {
             // > Crop
             if (sfw < sfh) {

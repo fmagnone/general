@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	const cropModeCheckbox = document.getElementById("cropModeCheckbox");
 	const containModeCheckbox = document.getElementById("containModeCheckbox");
 	const autoForceWidthHeightCheckbox = document.getElementById("autoForceWidthHeightCheckbox");
-	const backColorPicker = document.getElementById("backColorPicker");	
+	const backColorPicker = document.getElementById("backColorPicker");
 	const example_image = document.getElementsByClassName("example_image");
 
 	// Variables
@@ -35,13 +35,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	// Image Class Constructor
 	class imageData {
 		constructor(
-			name, url, 
+			name, url,
 			id_btn, id_file,
 			size_old, size_new,
 			id_img_old, id_img_new,
-			ext_old, ext_new, 
-			res_old, res_new, 
-			) {
+			ext_old, ext_new,
+			res_old, res_new,
+		) {
 			this.valid = true;
 			this.name = name;
 			this.url = url;
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	checkAutoUpdateMode();
 	for (var i = 0; i < example_image.length; i++) {
 		// Add example image event listeners
-		example_image[i].onclick = function(){
+		example_image[i].onclick = function () {
 			addCustomPond(this.src);
 		}
 	};
@@ -341,7 +341,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			cropModeCheckbox.checked = true;
 		}
 	}
-	backColorPicker.onchange = function (){
+	backColorPicker.onchange = function () {
 		backColor = this.value;
 		// Resize images update
 		if (updateCheckbox.checked) { updateImagesResize() };
@@ -361,6 +361,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			//cropMode = "crop";
 			//cropModeCheckbox.checked = true;
 		}
+
+		if (updateCheckbox.checked) { updateImagesResize() };
 	}
 	updateButton.onclick = function () {
 		// Resize all images when update button is clicked
@@ -386,12 +388,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		if (this.value < minSizeValue) {
 			console.log("Width min value: " + minSizeValue);
 			this.value = "";
-			return;
+			//return;
 		}
 		if (isNaN(this.value)) {
 			console.log("Width should be a numeric value");
 			this.value = "";
-			return;
 		}
 
 		// Update values
@@ -399,20 +400,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		let z = inputHeight.value;
 		clearValues();
 		this.value = i;
+		inputHeight.value = z; // NEW
 		resizingWidth = parseInt(i);
+		resizingHeight = parseInt(z); // NEW
 		inputType = "fixed";
+
+		// Prevent from empty field
+		if (isNaN(resizingWidth)) { resizingWidth = 0; };
+		if (isNaN(resizingHeight)) { resizingHeight = 0; }
 
 		// Update styles
 		clearStyles();
 		this.classList.add("selected");
+		inputHeight.classList.add("selected");
 
 		// Update values and styles if forced
 		if (forceMode) {
-			if (z == "") { z = i };
-			inputHeight.value = z;
-			resizingHeight = parseInt(z);
 			inputType = "forced";
-			inputHeight.classList.add("selected");
 		}
 
 		// Resize images update
@@ -423,12 +427,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		if (this.value < minSizeValue) {
 			console.log("Height min value: " + minSizeValue);
 			this.value = "";
-			return;
+			//return;
 		}
 		if (isNaN(this.value)) {
 			console.log("Height should be a numeric value");
 			this.value = "";
-			return;
 		}
 
 		// Update values
@@ -436,20 +439,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		let z = inputWidth.value;
 		clearValues();
 		this.value = i;
+		inputWidth.value = z; // NEW
 		resizingHeight = parseInt(i);
+		resizingWidth = parseInt(z); // NEW
 		inputType = "fixed";
+
+		// Prevent from empty field
+		if (isNaN(resizingWidth)) { resizingWidth = 0; };
+		if (isNaN(resizingHeight)) { resizingHeight = 0; }
 
 		// Update styles
 		clearStyles();
 		this.classList.add("selected");
+		inputWidth.classList.add("selected");
 
 		// Update values and styles if forced
 		if (forceMode) {
-			if (z == "") { z = i };
-			inputWidth.value = z;
-			resizingWidth = parseInt(z);
 			inputType = "forced";
-			inputWidth.classList.add("selected");
 		}
 
 		// Resize images update
@@ -484,7 +490,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	// --------------------------------------------------- //
 	// Resizer caller
 	resizeImage = function (id) {
-		console.log("Resize call (id, scale) --", id, resizingFactor);
+		console.log("Resize call id " + id, inputType);
 
 		// Assign img to variable
 		let img_old = document.getElementById(imageList[id].id_img_old);
@@ -533,22 +539,25 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	// --------------------------------------------------- //
 	// FilePond caller
 
-	// Register the plugin
-	//FilePond.registerPlugin(FilePondPluginImageResize, FilePondPluginImagePreview);
-
-	// Get a file input reference
+	// Get a file input reference and apply properties
 	const input = document.querySelector('input[type="file"]');
-
-	// const pond = FilePond.create(input);
 	const pond = FilePond.create(input, {
 		// CONFIG ------------
 		// Only accept images
 		acceptedFileTypes: ['image/*'],
 
+		// Main Options
+		name: 'filepond',
+		credits: false,
+		dropOnElement: false,
+		dropOnPage: true,
+		labelIdle: 'Drag & drop your image<br/><span class="filepond--label-action">or browse to upload</span>',
+
+
 		// FUNCTIONS ------------
 		// Call back when image is added
 		onaddfile: (err, fileItem) => {
-			console.log("FP Add File Function called");
+			//console.log("FP Add File Function called");
 
 			// Assign image to list
 			id = saveImageData(
@@ -558,7 +567,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 				fileItem.fileExtension,
 				fileItem.id);
 
-			// Add previous images to DOM
+			// Add images to DOM
 			addPrevImageToDOM(fileItem, id);
 			addResizedImageToDOM(fileItem, id);
 
@@ -573,7 +582,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		},
 		// File has been removed
 		onremovefile: function (error, fileItem) {
-			console.log("FP Remove File Function called");
+			//console.log("FP Remove File Function called");
 
 			// Remove item from list and remove download button
 			removeImageData(fileItem.id);
@@ -589,13 +598,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	});
 	pond.maxFiles = 10;
 
-	addCustomPond = function(src) {
+	addCustomPond = function (src) {
 		pond.addFile(src);
 	};
 
 	// TEMP auto testing
 	//pond.addFile("img/porsche.jpg");
-	pond.addFile("img/couple.jpg");
+	//pond.addFile("img/couple.jpg");
 
 	// DOM info
 	console.log('DOM fully loaded and parsed');
