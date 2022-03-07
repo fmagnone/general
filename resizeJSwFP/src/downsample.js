@@ -1,50 +1,5 @@
 // Simple downsample
 function downScaleImage(img, inputType, cropMode, backColor, scalePercentage, fixedWidth, fixedHeight) {
-    /* // ACTIVATE AFTER TESTING
-    
-    // Define type and variables
-    let finalWidth = 100;
-    let finalHeight = 100;
-
-    if (inputType == "s") {
-        // Scale factor
-        finalWidth = Math.floor(img.width * resizingFactor);
-        finalHeight = Math.floor(img.height * resizingFactor);
-    }
-    else if (inputType == "w") {
-        // Width only
-        let scale = resizingWidth / img.width;
-        finalWidth = resizingWidth
-        finalHeight = Math.ceil(img.height * scale);
-    }
-    else if (inputType == "h") {
-        // Height only
-        let scale = resizingHeight / img.height;
-        finalWidth = Math.ceil(img.width * scale);
-        finalHeight = resizingHeight;
-    } else if (inputType == "p") {
-        // Preset width and height
-        finalWidth = resizingWidth;
-        finalHeight = resizingHeight;
-    } else if (inputType == "forced") {
-        finalWidth = resizingWidth;
-        finalHeight = resizingHeight;
-    }
-
-    // Create a new canvas
-    let canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    ctx = canvas.getContext("2d");
-
-    // Define with and height of scaled canvas
-    canvas.width = finalWidth;
-    canvas.height = finalHeight;
-    ctx.drawImage(img, 0, 0, finalWidth, finalHeight);*/
-
-
-
-
     // Define main variables
     let sx, sy, sw, sh;
     let dx, dy, dw, dh;
@@ -55,75 +10,72 @@ function downScaleImage(img, inputType, cropMode, backColor, scalePercentage, fi
     dx = 0, dy = 0;
     cw = 150, ch = 100;
 
-    // Define scale type
+    // Define canvas width and height depending on type
     if (inputType == "percentage") {
         // Scale image auto to a defined percentage
         cw = Math.ceil(sw * scalePercentage);
         ch = Math.ceil(sh * scalePercentage);
     } else if (inputType == "fixed") {
         // Scale image to a fixed dimension
-        // TODO
         cw = fixedWidth;
         ch = fixedHeight;
+        // Prevent from cw=0 or ch=0
+        if (fixedWidth == 0) { cw = Math.ceil(sw / (sh / fixedHeight)); }
+        if (fixedHeight == 0) { ch = Math.ceil(sh / (sw / fixedWidth)); }
     } else if (inputType == "forced") {
         // Force image to a fixed size
-        // TODO
-        //finalWidth = resizingWidth;
-        //finalHeight = resizingHeight;
         cw = fixedWidth;
         ch = fixedHeight;
+        dw = fixedWidth;
+        dh = fixedHeight;
     };
 
-    // Calculate Proportions
-    let proportion = img.width / img.height; // if proportion > 1 horizontal image, if < 1 vertical image
-    //console.log("Proportion: ", proportion);
+    // Calculate Scale Factor and scale size
+    let sfw = img.width / cw;
+    let sfh = img.height / ch;
 
-    if (cropMode) {
-        // > Crop
-        // Calculate Scale Factor and scale size
-        let sfw = img.width / cw;
-        let sfh = img.height / ch;
-        if (sfw < sfh) {
-            // Scale and crop using width
-            //console.log("Scale by Width: ", sfw);
-            dw = Math.ceil(sw / sfw);
-            dh = Math.ceil(sh / sfw);
-            // Calculate centered position
-            dy = Math.ceil((ch - dh) / 2);
+    if (inputType != "forced") {
+        if (cropMode) {
+            // > Crop
+            if (sfw < sfh) {
+                // Scale and crop using width
+                //console.log("Scale by Width: ", sfw);
+                dw = Math.ceil(sw / sfw);
+                dh = Math.ceil(sh / sfw);
+                // Calculate centered position
+                dy = Math.ceil((ch - dh) / 2);
+            } else {
+                // Scale and crop using width
+                //console.log("Scale by Height: ", sfh);
+                dw = Math.ceil(sw / sfh);
+                dh = Math.ceil(sh / sfh);
+                // Calculate centered position
+                dx = Math.ceil((cw - dw) / 2);
+            }
         } else {
-            // Scale and crop using width
-            //console.log("Scale by Height: ", sfh);
-            dw = Math.ceil(sw / sfh);
-            dh = Math.ceil(sh / sfh);
-            // Calculate centered position
-            dx = Math.ceil((cw - dw) / 2);
-        }
-    } else {
-        // > Contain
-        // Calculate Scale Factor and scale size
-        let sfw = img.width / cw;
-        let sfh = img.height / ch;
-        if (sfw > sfh) {
-            // Scale and crop using width
-            //console.log("Scale by Width: ", sfw);
-            dw = Math.ceil(sw / sfw);
-            dh = Math.ceil(sh / sfw);
-            // Calculate centered position
-            dy = Math.ceil((ch - dh) / 2);
-        } else {
-            // Scale and crop using width
-            //console.log("Scale by Height: ", sfh);
-            dw = Math.ceil(sw / sfh);
-            dh = Math.ceil(sh / sfh);
-            // Calculate centered position
-            dx = Math.ceil((cw - dw) / 2);
-        }
+            // > Contain
+            if (sfw > sfh) {
+                // Scale and crop using width
+                //console.log("Scale by Width: ", sfw);
+                dw = Math.ceil(sw / sfw);
+                dh = Math.ceil(sh / sfw);
+                // Calculate centered position
+                dy = Math.ceil((ch - dh) / 2);
+            } else {
+                // Scale and crop using width
+                //console.log("Scale by Height: ", sfh);
+                dw = Math.ceil(sw / sfh);
+                dh = Math.ceil(sh / sfh);
+                // Calculate centered position
+                dx = Math.ceil((cw - dw) / 2);
+            }
+        };
     };
 
     // Print analysis
-    console.log("S: ", sx, sy, sw, sh);
-    console.log("D: ", dx, dy, dw, dh);
-    console.log("C: ", cw, ch);
+    //console.log("S: ", sx, sy, sw, sh);
+    //console.log("D: ", dx, dy, dw, dh);
+    //console.log("C: ", cw, ch);
 
     // Create a new canvas
     let canvas = document.createElement('canvas');
@@ -133,11 +85,10 @@ function downScaleImage(img, inputType, cropMode, backColor, scalePercentage, fi
 
     // Define Background Color
     ctx.fillStyle = backColor;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, cw, ch);
 
     // Draw scaled image inside canvas
-    ctx.drawImage(img, sx, sy, sw, sh,  // source rectangle       - sx, sy, sWidth, sHeight
-        dx, dy, dw, dh); // destination rectangle  - dx, dy, dWidth, dHeight
+    ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
 
     return canvas;
 }

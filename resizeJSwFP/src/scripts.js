@@ -34,7 +34,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 	// Image Class Constructor
 	class imageData {
-		constructor(name, url, size_old, id_img_old, ext_old, id_img_new, id_btn, id_file, ext_new, size_new, res_old, res_new) {
+		constructor(
+			name, url, 
+			id_btn, id_file,
+			size_old, size_new,
+			id_img_old, id_img_new,
+			ext_old, ext_new, 
+			res_old, res_new, 
+			) {
 			this.valid = true;
 			this.name = name;
 			this.url = url;
@@ -393,7 +400,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		clearValues();
 		this.value = i;
 		resizingWidth = parseInt(i);
-		inputType = "w";
+		inputType = "fixed";
 
 		// Update styles
 		clearStyles();
@@ -430,7 +437,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		clearValues();
 		this.value = i;
 		resizingHeight = parseInt(i);
-		inputType = "h";
+		inputType = "fixed";
 
 		// Update styles
 		clearStyles();
@@ -462,7 +469,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		clearValues();
 		resizingWidth = w;
 		resizingHeight = h;
-		inputType = "p";
+		inputType = "fixed";
 
 		// Update styles
 		clearStyles();
