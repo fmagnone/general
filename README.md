@@ -30,4 +30,4 @@ MIT License (https://choosealicense.com/licenses/mit/)
 
 Inspiration and thanks.
 
-* Indicated in code :)
+* Indicated in code.
