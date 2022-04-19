@@ -1,6 +1,6 @@
-# Learning Personal Projects
+# Learning Projects
 
-Learning Projects. Testing different libs and codes.
+Testing different libs and codes.
 
 ## Description
 
