@@ -1,0 +1,55 @@
+---
+//import generateGreeting from "./GreetingScript.js";
+---
+
+<div>
+  <h2>Greeting App</h2>
+  <form id="greetingForm">
+    <label for="name">Enter your name:</label>
+    <input type="text" id="name" name="name" required />
+    <br />
+    <br />
+
+    <label for="greeting">Select a greeting:</label>
+    <select id="greeting" name="greeting">
+      <option value="hello">Hello</option>
+      <option value="goodmorning">Good Morning</option>
+      <option value="goodafternoon">Good Afternoon</option>
+      <option value="goodevening">Good Evening</option>
+    </select>
+    <br /><br />
+
+    <input type="submit" value="Submit" />
+  </form>
+
+  <script>
+    import generateGreeting from "./GreetingScript.js";
+    import { onMount } from 'svelte';
+    
+    const handleFormSubmit = async (event) => {
+      event.preventDefault(); // Prevent the form from submitting normally
+
+      const nameInput = document.getElementById("name") as HTMLInputElement;
+      const greetingInput = document.getElementById("greeting") as HTMLInputElement;
+
+      const name = nameInput.value;
+      const greeting = greetingInput.value;
+
+      const generatedGreeting = await generateGreeting(name, greeting);
+
+      alert("Generated Greeting: " + generatedGreeting);
+    };
+    
+
+   /*
+    onMount(() => {
+      const form = document.getElementById("greetingForm");
+      form.addEventListener("submit", handleFormSubmit);
+
+      return () => {
+        form.removeEventListener("submit", handleFormSubmit);
+      };
+    });
+    */
+  </script>
+</div>
