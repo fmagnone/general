@@ -1,33 +1,19 @@
 # Learning Projects
 
-Testing different libs and codes.
+Internal repo for testing different libs and codes.
 
 
-## Description
+## Note
 
-This is for personal use only. Trying different systems to learn coding.
+This folder is for personal use only and for learning purposes. If something is wrong, please let me know and I will correct any error or delete any file. Thanks!
 
 
 ## Authors
 
-FMR
-
-
-## Version History
-
-* 0.1
-    * Initial Release
-
-
-## License
-
-Copyright (c) [2022] [FMR.UY]
-
-MIT License (https://choosealicense.com/licenses/mit/)
+* Indicated in code.
+* FMR
 
 
 ## Acknowledgments
 
-Inspiration and thanks.
-
-* Indicated in code.
+* Most of the files and codes come from external sources.
