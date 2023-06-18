@@ -2,9 +2,6 @@
 
 Internal repo for testing different libs and codes.
 
-
-## Note
-
 This folder is for personal use only and for learning purposes. If something is wrong, please let me know and I will correct any error or delete any file. Thanks!
 
 
