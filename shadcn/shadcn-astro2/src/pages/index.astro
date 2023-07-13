@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+import '@/styles/global.css';
+
+import { PopoverDemo } from '@/components/Popover';
+import { TooltipDemo } from '@/components/Tooltip';
+import AccordionDemo from '@/components/Accordion';
+import DemoGroup from '@/components/DemoGroup';
+
+---
+
+<Layout title="Welcome to Astro.">
+	<main>
+		<h1>Astro test page</h1>
+
+    
+    <PopoverDemo client:load />
+    <TooltipDemo client:load />
+    <AccordionDemo client:load />
+
+    <DemoGroup client:load />
+		
+	</main>
+</Layout>
+
